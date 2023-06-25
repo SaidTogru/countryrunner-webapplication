@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "author": "Sanidhya Kr. Verma",
-  "description": "Modern Full Stack Admin Dashboard using MERN",
   "keywords": [
     "reactjs",
     "react",
@@ -35,9 +33,10 @@
     "react": "^18.2.0",
     "react-datepicker": "4.8.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
-    "react-router-dom": "6",
-    "react-scripts": "5.0.1",
+    "react-redux": "^8.1.0",
+    "react-router-dom": "^6.13.0",
+    "react-scripts": "^5.0.1",
+    "react-unity-webgl": "^9.4.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
