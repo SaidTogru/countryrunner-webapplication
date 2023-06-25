@@ -10,7 +10,7 @@ import { themeSettings } from "theme";
 // Scenes
 import {
   Layout,
-  Dashboard,
+  Analytics,
   Products,
   Customers,
   Transactions,
@@ -21,6 +21,7 @@ import {
   Breakdown,
   Admin,
   Performance,
+  Game,
 } from "scenes";
 
 // App
@@ -40,7 +41,7 @@ const App = () => {
             {/* Routes */}
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/analytics" element={<Analytics />} />
               <Route path="/products" element={<Products />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/transactions" element={<Transactions />} />
@@ -51,6 +52,7 @@ const App = () => {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/performance" element={<Performance />} />
+              <Route path="/game" element={<Game />} />
             </Route>
           </Routes>
         </ThemeProvider>

@@ -28,6 +28,8 @@ import {
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
   PieChartOutlined,
+  Gamepad,
+  Insights,
 } from "@mui/icons-material";
 
 import { FlexBetween } from ".";
@@ -36,60 +38,16 @@ import profileImage from "assets/profile.jpeg";
 // Nav items
 const navItems = [
   {
-    text: "Dashboard",
-    icon: <HomeOutlined />,
-  },
-  {
-    text: "Client Facing",
-    icon: null,
-  },
-  {
-    text: "Products",
-    icon: <ShoppingCartOutlined />,
-  },
-  {
-    text: "Customers",
-    icon: <Groups2Outlined />,
-  },
-  {
-    text: "Transactions",
-    icon: <ReceiptLongOutlined />,
+    text: "Play",
+    icon: <Gamepad />,
   },
   {
     text: "Geography",
     icon: <PublicOutlined />,
   },
   {
-    text: "Sales",
-    icon: null,
-  },
-  {
-    text: "Overview",
-    icon: <PointOfSaleOutlined />,
-  },
-  {
-    text: "Daily",
-    icon: <TodayOutlined />,
-  },
-  {
-    text: "Monthly",
-    icon: <CalendarMonthOutlined />,
-  },
-  {
-    text: "Breakdown",
-    icon: <PieChartOutlined />,
-  },
-  {
-    text: "Management",
-    icon: null,
-  },
-  {
-    text: "Admin",
-    icon: <AdminPanelSettingsOutlined />,
-  },
-  {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
+    text: "Analytics",
+    icon: <Insights />,
   },
 ];
 
@@ -150,9 +108,9 @@ const Sidebar = ({
                     sx={{
                       cursor: "pointer",
                     }}
-                    title="ECOMVISION"
+                    title="Country Runner"
                   >
-                    ECOMVISION
+                    Country Runner
                   </Typography>
                 </Box>
                 {/* Mobile Sidebar Toggle Icon */}
@@ -222,40 +180,6 @@ const Sidebar = ({
                 );
               })}
             </List>
-          </Box>
-
-          {/* User */}
-          <Box pb="1rem">
-            <Divider />
-            <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
-              <Box
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="40px"
-                width="40px"
-                borderRadius="50%"
-                sx={{ objectFit: "cover" }}
-              />
-              <Box textAlign="left">
-                <Typography
-                  fontWeight="bold"
-                  fontSize="0.9rem"
-                  sx={{ color: theme.palette.secondary[100] }}
-                >
-                  {user.name}
-                </Typography>
-                <Typography
-                  fontSize="0.8rem"
-                  sx={{ color: theme.palette.secondary[200] }}
-                >
-                  {user.occupation}
-                </Typography>
-              </Box>
-              <SettingsOutlined
-                sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
-              />
-            </FlexBetween>
           </Box>
         </Drawer>
       )}

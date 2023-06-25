@@ -26,13 +26,19 @@ const BreakdownChart = ({ isDashboard = false }) => {
     theme.palette.secondary[500],
   ];
 
-  // formatted data
-  const formattedData = Object.entries(data.salesByCategory).map(
+  const placeholderData = {
+    category1: 100,
+    category2: 200,
+    category3: 150,
+    category4: 300,
+  };
+
+  const formattedData = Object.entries(placeholderData).map(
     ([category, sales], i) => ({
       id: category,
       label: category,
       value: sales,
-      color: colors[i],
+      color: colors[i % colors.length],
     })
   );
 

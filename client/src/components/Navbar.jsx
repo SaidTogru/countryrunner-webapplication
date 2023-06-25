@@ -51,29 +51,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* Left Side */}
-        <FlexBetween>
-          {/* Sidebar Menu */}
-          <IconButton
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            title="Toggle Sidebar"
-          >
-            <MenuIcon />
-          </IconButton>
-
-          {/* Search */}
-          <FlexBetween
-            backgroundColor={theme.palette.background.alt}
-            borderRadius="9px"
-            gap="3rem"
-            p="0.1rem 1.5rem"
-            title="Search"
-          >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        </FlexBetween>
+        <FlexBetween></FlexBetween>
 
         {/* Right Side */}
         <FlexBetween gap="1.5rem">

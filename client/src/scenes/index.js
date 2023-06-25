@@ -2,7 +2,7 @@
 // ! Don't remove anything from here
 
 import Layout from "./layout";
-import Dashboard from "./dashboard";
+import Analytics from "./analytics";
 import Products from "./products";
 import Customers from "./customers";
 import Transactions from "./transactions";
@@ -13,11 +13,12 @@ import Monthly from "./monthly";
 import Breakdown from "./breakdown";
 import Admin from "./admin";
 import Performance from "./performance";
+import Game from "./game";
 
 // export scenes
 export {
   Layout,
-  Dashboard,
+  Analytics,
   Products,
   Customers,
   Transactions,
@@ -28,4 +29,5 @@ export {
   Breakdown,
   Admin,
   Performance,
+  Game,
 };

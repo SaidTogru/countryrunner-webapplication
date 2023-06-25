@@ -3,9 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Backend Api
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      process.env.REACT_APP_BASE_URL ||
-      "http://localhost:5001",
+    baseUrl: process.env.REACT_APP_BASE_URL || "http://localhost:5001",
   }), // base url
   reducerPath: "adminApi",
   // tags
@@ -18,7 +16,7 @@ export const api = createApi({
     "Sales",
     "Admins",
     "Performance",
-    "Dashboard",
+    "Analytics",
   ],
   // endpoints
   endpoints: (build) => ({
@@ -59,8 +57,8 @@ export const api = createApi({
       providesTags: ["Performance"],
     }),
     getDashboard: build.query({
-      query: () => "general/dashboard",
-      providesTags: ["Dashboard"],
+      query: () => "general/analytics",
+      providesTags: ["Analytics"],
     }),
   }),
 });
