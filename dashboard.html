@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      canvas {
+        max-width: 600px;
+        margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    <canvas id="gameChart"></canvas>
+    <canvas id="userChart"></canvas>
+    <canvas id="skillsChart"></canvas>
+
+    <script>
+      // Generate placeholder data for the game chart
+      var gameLabels = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5"];
+      var gameScores = [75, 80, 90, 85, 95];
+
+      // Create a bar chart for the game scores
+      var gameCtx = document.getElementById("gameChart").getContext("2d");
+      new Chart(gameCtx, {
+        type: "bar",
+        data: {
+          labels: gameLabels,
+          datasets: [
+            {
+              label: "Game Scores",
+              data: gameScores,
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      // Generate placeholder data for the user chart
+      var userLabels = ["User A", "User B", "User C", "User D", "User E"];
+      var userScores = [85, 70, 95, 80, 90];
+
+      // Create a pie chart for the user scores
+      var userCtx = document.getElementById("userChart").getContext("2d");
+      new Chart(userCtx, {
+        type: "pie",
+        data: {
+          labels: userLabels,
+          datasets: [
+            {
+              data: userScores,
+              backgroundColor: [
+                "#ff6384",
+                "#36a2eb",
+                "#ffcd56",
+                "#ff9f40",
+                "#4bc0c0",
+              ],
+              hoverBackgroundColor: [
+                "#ff6384",
+                "#36a2eb",
+                "#ffcd56",
+                "#ff9f40",
+                "#4bc0c0",
+              ],
+            },
+          ],
+        },
+      });
+
+      // Generate placeholder data for the skills chart
+      var skillsLabels = [
+        "Vocabulary",
+        "Grammar",
+        "Understanding",
+        "Speaking",
+        "Writing",
+      ];
+      var skillsScores = [80, 75, 90, 85, 95];
+
+      // Create a radar chart for student skills
+      var skillsCtx = document.getElementById("skillsChart").getContext("2d");
+      new Chart(skillsCtx, {
+        type: "radar",
+        data: {
+          labels: skillsLabels,
+          datasets: [
+            {
+              label: "Student Skills",
+              data: skillsScores,
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            r: {
+              suggestedMin: 0,
+              suggestedMax: 100,
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
