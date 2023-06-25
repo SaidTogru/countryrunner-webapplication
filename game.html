@@ -17,13 +17,48 @@
       </div>
       <div id="unity-warning"></div>
       <div id="unity-footer">
-        <div id="unity-footer">
-          <button id="startButton">Start Game</button>
-          <button id="fullscreenButton">Fullscreen</button>
+        <button id="startButton">Start Game</button>
+        <button id="fullscreenButton">Fullscreen</button>
+        <div class="dropdown">
+          <button id="countryButton" class="dropbtn">Germany</button>
+          <div class="dropdown-content">
+            <a href="#" data-value="Germany">Germany</a>
+            <a href="#" data-value="U.S" id="usOption">U.S (Beta)</a>
+            <a href="#" data-value="France" id="franceOption">France (Beta)</a>
+            <a href="#" data-value="China" id="chinaOption">China (Beta)</a>            
+            <!-- Add more countries as needed -->
+          </div>
         </div>
       </div>
-    </div>
+        
     <script>
+      /// Get the selectedCountry element
+      var CountryElement = document.querySelector("#countryButton");
+      var usOption = document.querySelector("#usOption");
+      var franceOption = document.querySelector("#franceOption");
+      var ukOption = document.querySelector("#chinaOption");
+    
+      usOption.style.pointerEvents = "none"; // Disable click events
+      franceOption.style.pointerEvents = "none"; // Disable click events
+      ukOption.style.pointerEvents = "none"; // Disable click events
+      
+      // Add event listener to dropdown options
+      document.querySelectorAll(".dropdown-content a").forEach((option) => {
+        option.addEventListener("click", function(event) {
+          event.preventDefault();
+          
+          // Get the selected country from the data-value attribute
+          var selectedCountry = option.dataset.value;
+          
+          // Update the selectedCountry element with the selected country
+          CountryElement.textContent = selectedCountry;
+          
+          // Perform any other desired actions here
+        });
+      });
+
+      
+
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");

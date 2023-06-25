@@ -5,17 +5,79 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+      /* Add your custom styles here */
+
       canvas {
         max-width: 600px;
         margin: 20px auto;
       }
+
+      .container {
+        text-align: center;
+      }
+
+      h2 {
+        margin-top: 30px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .row:before,
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .col-md-6 {
+        float: left;
+        width: 50%;
+        padding: 0 15px;
+        box-sizing: border-box;
+      }
+
+      .chart-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
     </style>
   </head>
   <body>
-    <h1>Dashboard</h1>
-    <canvas id="gameChart"></canvas>
-    <canvas id="userChart"></canvas>
-    <canvas id="skillsChart"></canvas>
+    <div class="container mt-4">
+      <h2>Analytics</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-container">
+            <h3 class="chart-title">Game Scores</h3>
+            <canvas id="gameChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-container">
+            <h3 class="chart-title">User Scores</h3>
+            <canvas id="userChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="chart-container">
+            <h3 class="chart-title">Student Skills</h3>
+            <canvas id="skillsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
       // Generate placeholder data for the game chart
