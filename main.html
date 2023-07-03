@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Country Runner</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="shortcut icon" href="Public/favicon.ico" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .nav-tabs {
+        overflow: hidden;
+        background-color: #f8f9fa;
+        border-bottom: none;
+      }
+
+      .nav-link {
+        color: #495057;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      .nav-link:hover {
+        background-color: #e9ecef;
+      }
+
+      .nav-link.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      .tab-content {
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      .tab-pane {
+        height: 100%;
+        overflow: auto;
+        scrollbar-width: none;
+      }
+
+      .tab-pane::-webkit-scrollbar {
+        display: none;
+      }
+
+      .dashboard-pane,
+      iframe {
+        height: 100%;
+        width: 100%;
+        border: 0;
+      }
+
+      .dashboard-pane iframe {
+        overflow: hidden;
+      }
+
+      .dashboard-pane::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#game">
+            <i class="fas fa-gamepad mr-2"></i>Game
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#dashboard">
+            <i class="fas fa-chart-line mr-2"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#feedback">
+            <i class="fas fa-chart-line mr-2"></i>AI Feedback
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#user">
+            <i class="fas fa-chart-line mr-2"></i>User
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content mt-2">
+        <div id="game" class="tab-pane fade show active">
+          <iframe src="game.html"></iframe>
+        </div>
+        <div id="user" class="tab-pane fade">
+          <iframe src="user.html"></iframe>
+        </div>
+        <div id="feedback" class="tab-pane fade">
+          <iframe src="feedback.html"></iframe>
+        </div>
+        <div id="dashboard" class="dashboard-pane">
+          <iframe src="dashboard.html" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+    <script>
+      function logout() {
+        localStorage.removeItem("username");
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
