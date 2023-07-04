@@ -67,68 +67,6 @@
       body {
         font-family: Arial, sans-serif;
       }
-
-      .chat-container {
-        width: 100%;
-        max-width: 600px;
-        margin: 40px auto;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-      }
-
-      .chat-output {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-        max-height: 400px;
-      }
-
-      .chat-output p {
-        margin: 10px 0;
-      }
-
-      .user-message {
-        text-align: right;
-        font-weight: bold;
-      }
-
-      .bot-message {
-        text-align: left;
-        font-weight: normal;
-      }
-
-      .chat-input-form {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        background-color: #f0f0f0;
-        border-top: 1px solid #e0e0e0;
-      }
-
-      .chat-input {
-        flex-grow: 1;
-        border: none;
-        border-radius: 3px;
-        padding: 10px;
-        margin-right: 10px;
-      }
-
-      .chat-submit {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-        border-radius: 3px;
-      }
-
-      .chat-submit:hover {
-        background-color: #0056b3;
-      }
     </style>
   </head>
   <body>
@@ -144,52 +82,93 @@
       </div>
     </div>
 
-    <div class="chat-container">
-      <div id="chat-output" class="chat-output"></div>
-      <form id="chat-form" class="chat-input-form">
-        <input
-          type="text"
-          id="chat-input"
-          class="chat-input"
-          placeholder="Type your message here"
-          autocomplete="off"
-        />
-        <button type="submit" class="chat-submit">Send</button>
-      </form>
-    </div>
+    <div id="chat-output"></div>
+    <!-- Output field -->
+
     <script>
-      const chatForm = document.getElementById("chat-form");
-      const chatInput = document.getElementById("chat-input");
-      const chatOutput = document.getElementById("chat-output");
+      // JavaScript code
 
-      chatForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const message = chatInput.value.trim();
-        if (!message) return;
+      // Select all the cards
+      const cards = document.querySelectorAll(".card");
 
-        chatOutput.innerHTML += `<p class="user-message">${message}</p>`;
-        chatInput.value = "";
-        chatOutput.scrollTop = chatOutput.scrollHeight;
+      // Loop through the cards and add click event listeners
+      cards.forEach((card) => {
+        card.addEventListener("click", async (event) => {
+          // Get the text from the span within the card
+          //const prompt = "Bist du ChatGPT? Stell dich kurz vor.";
+          var cardType = card.querySelector("span").textContent;
 
-        const response = await fetch("gptchat.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.choices && data.choices[0] && data.choices[0].text) {
-            chatOutput.innerHTML += `<p class="bot-message">${data.choices[0].text}</p>`;
-          } else {
-            console.error("Error: Unexpected response format", data);
+          if (cardType == "What were your mistakes?") {
+            var prompt = `I played a Quiz Game about Germany and got some answers wrong. These were my mistakes:
+            "multiple_choice" question "Who is the current Chancellor of Germany?" in category "politics"
+            Possible answer: "Angela Merkel", "Olaf Scholz", "Frank-Walter Steinmeier"
+            correct_answer: "Olaf Scholz"
+            My answer: "Angela Merkel"
+            "true_or_false" question "Germany has a unicameral legislative system." in category "government"
+            correct_answer: "False"
+            My answer: "True"
+            "fill_in_the_blank" question "The highest mountain in Germany is the _______." in category "geography"
+            correct_answer: "Zugspitze"
+            My answer: "Mount Everest"
+            "multiple_choice" question "Which river flows through Berlin?" in category "geography"
+            Possible answer: "Rhine", "Elbe", "Spree"
+            correct_answer: "Spree"
+            My answer: "Elbe"
+            Can you give me feedback about it?"`;
           }
-          chatOutput.scrollTop = chatOutput.scrollHeight;
-        } else {
-          console.error("Error communicating with GPTChat API");
-        }
+          if (cardType == "What did you do well?") {
+            var prompt = `I played a Quiz Game about Germany and answered some questions correctly. These were my correct answers:
+            "multiple_choice" question "Who is the current Chancellor of Germany?" in category "politics"
+            Possible answer: "Angela Merkel", "Olaf Scholz", "Frank-Walter Steinmeier"
+            correct_answer: "Olaf Scholz"
+            My answer: "Olaf Scholz"
+            "true_or_false" question "Germany has a unicameral legislative system." in category "government"
+            correct_answer: "False"
+            My answer: "False"
+            "fill_in_the_blank" question "The highest mountain in Germany is the _______." in category "geography"
+            correct_answer: "Zugspitze"
+            My answer: "Zugspitze"
+            "multiple_choice" question "Which river flows through Berlin?" in category "geography"
+            Possible answer: "Rhine", "Elbe", "Spree"
+            correct_answer: "Spree"
+            My answer: "Spree"
+            Can you give me feedback about it and some more information?"`;
+          }
+          if (cardType == "How can you improve?") {
+            var promp = `I played a quiz game about Germany and the German language. Some answers were right, others were wrong. 
+            Can you give me a plan on how to improve? Make a learning plan for me!`;
+          }
+          // Make the API request to ChatGPT
+          const response = await fetch(
+            "https://api.openai.com/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                Authorization: "Bearer API_KEY", // Replace with your actual API Key
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [
+                  {
+                    role: "user",
+                    content: prompt,
+                  },
+                ],
+                temperature: 0.7,
+              }),
+            }
+          );
+
+          // Parse the response
+          const data = await response.json();
+
+          // Get the chat output element
+          const chatOutput = document.getElementById("chat-output");
+
+          // Display the content in the output field
+          chatOutput.innerHTML = data.choices[0].message.content;
+        });
       });
     </script>
   </body>
