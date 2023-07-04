@@ -5,6 +5,9 @@
   animation: Gradient 3s ease infinite;
 }
 
+body {
+  background-color: #f0f0f0;
+}
 @keyframes Gradient {
   0% {
     background-position: 0% 50%;

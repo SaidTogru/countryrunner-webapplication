@@ -1,9 +1,196 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- Meta-information and external resource references go here -->
+    <style>
+      @font-face {
+        font-family: "CustomFont";
+        src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px;
+      }
+
+      .card {
+        margin: 2%;
+        width: 100vw;
+        height: 10vh;
+        box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.25);
+        border-radius: 3px;
+        transition: 0.2s all;
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        font-family: "CustomFont", sans-serif;
+        font-size: 16px;
+        padding-top: 50px;
+      }
+
+      .card > span {
+        display: block;
+        margin: auto;
+        max-width: 80px;
+      }
+
+      .card.red {
+        background-color: #a30d0dc4;
+        color: white;
+      }
+
+      .card.green {
+        background-color: #23a023c0;
+        color: white;
+      }
+
+      .card.blue {
+        background-color: #2929b9cc;
+        color: white;
+      }
+
+      .container:hover .card {
+        filter: blur(3px);
+        opacity: 0.5;
+        transform: scale(0.98);
+        box-shadow: none;
+      }
+
+      .container:hover .card:hover {
+        transform: scale(1);
+        filter: blur(0px);
+        opacity: 1;
+        box-shadow: 0 8px 20px 0px rgba(0, 0, 0, 0.125);
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .chat-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-output {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 400px;
+      }
+
+      .chat-output p {
+        margin: 10px 0;
+      }
+
+      .user-message {
+        text-align: right;
+        font-weight: bold;
+      }
+
+      .bot-message {
+        text-align: left;
+        font-weight: normal;
+      }
+
+      .chat-input-form {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .chat-input {
+        flex-grow: 1;
+        border: none;
+        border-radius: 3px;
+        padding: 10px;
+        margin-right: 10px;
+      }
+
+      .chat-submit {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+
+      .chat-submit:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
-    Test
+    <div class="container">
+      <div class="card red">
+        <span>What were your mistakes?</span>
+      </div>
+      <div class="card green">
+        <span>What did you do well?</span>
+      </div>
+      <div class="card blue">
+        <span>How can you improve?</span>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <div id="chat-output" class="chat-output"></div>
+      <form id="chat-form" class="chat-input-form">
+        <input
+          type="text"
+          id="chat-input"
+          class="chat-input"
+          placeholder="Type your message here"
+          autocomplete="off"
+        />
+        <button type="submit" class="chat-submit">Send</button>
+      </form>
+    </div>
+    <script>
+      const chatForm = document.getElementById("chat-form");
+      const chatInput = document.getElementById("chat-input");
+      const chatOutput = document.getElementById("chat-output");
+
+      chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        chatOutput.innerHTML += `<p class="user-message">${message}</p>`;
+        chatInput.value = "";
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+
+        const response = await fetch("gptchat.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.choices && data.choices[0] && data.choices[0].text) {
+            chatOutput.innerHTML += `<p class="bot-message">${data.choices[0].text}</p>`;
+          } else {
+            console.error("Error: Unexpected response format", data);
+          }
+          chatOutput.scrollTop = chatOutput.scrollHeight;
+        } else {
+          console.error("Error communicating with GPTChat API");
+        }
+      });
+    </script>
   </body>
 </html>
