@@ -2,7 +2,7 @@
 // Configuration file
 
 // Define the OpenAI API key
-define('OPENAI_API_KEY', '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');
+define('OPENAI_API_KEY', '');
 // Define the model to be used, for example: text-davinci-003
 define('MODEL', 'text-davinci-003');
 // Define the temperature setting for the model, a value between 0 and 1 (e.g., 0.9)
