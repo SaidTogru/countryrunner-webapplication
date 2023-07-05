@@ -134,8 +134,9 @@
             My answer: "Spree"
             Can you give me feedback about it and some more information?"`;
           }
+          //Explain the right answer
           if (cardType == "How can you improve?") {
-            var promp = `I played a quiz game about Germany and the German language. Some answers were right, others were wrong. 
+            var prompt = `I played a quiz game about Germany and the German language. Some answers were right, others were wrong. 
             Can you give me a plan on how to improve? Make a learning plan for me!`;
           }
           // Make the API request to ChatGPT
@@ -144,7 +145,7 @@
             {
               method: "POST",
               headers: {
-                Authorization: "Bearer API_KEY", // Replace with your actual API Key
+                Authorization: "Bearer API_KEY", // Get from .env
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
