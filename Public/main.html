@@ -2,18 +2,19 @@
 <html>
   <head>
     <title>Country Runner</title>
-    <link
+   <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
     <link rel="shortcut icon" href="Public/favicon.ico" />
-    <link rel="stylesheet" href="style.css" />
-    <style>
-      html,
+    <link rel="stylesheet" type="text/css" href="/style.css">
+   <style>
+    html,
       body {
         height: 100%;
         margin: 0;
         overflow: hidden;
+        background-color:#212121;
       }
 
       .container {
@@ -87,7 +88,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#dashboard">
+          <a class="nav-link" data-toggle="tab" href="#dashboard" >
             <i class="fas fa-chart-line mr-2"></i>Dashboard
           </a>
         </li>
@@ -112,8 +113,8 @@
         <div id="feedback" class="tab-pane fade">
           <iframe src="feedback.html"></iframe>
         </div>
-        <div id="dashboard" class="dashboard-pane">
-          <iframe src="dashboard.html" frameborder="0"></iframe>
+        <div id="dashboard" class="dashboard-pane" sandbox="allow-same-origin">
+          <iframe src="/dashboard" frameborder="0"></iframe>
         </div>
       </div>
     </div>

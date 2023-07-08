@@ -1,0 +1,27 @@
+{
+  "name": "countryrunner-webapplication",
+  "version": "1.0.0",
+  "description": "This repository contains the frontend and backend code for CountryRunner, an E-Assessment and Learning Analytics Game built using Unity. The main objective of this project/repository is to integrate the game into a website.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaidTogru/countryrunner-webapplication.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SaidTogru/countryrunner-webapplication/issues"
+  },
+  "homepage": "https://github.com/SaidTogru/countryrunner-webapplication#readme",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongodb": "^5.7.0",
+    "mongoose": "^7.3.2",
+    "path": "^0.12.7"
+  }
+}

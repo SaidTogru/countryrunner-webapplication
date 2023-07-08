@@ -2,16 +2,9 @@
 <html>
   <head>
     <title>Learning Dashboard</title>
-   <!-- <link rel="stylesheet" href="style.css" />-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
 
-    
-<!-- Font Awesome -->
-<link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  rel="stylesheet"
-/>
 <!-- Google Fonts -->
 <link
   href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
@@ -21,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Passion+One&display=swap" rel="stylesheet">
+
 <!-- MDB -->
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
@@ -71,8 +65,6 @@
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Passion One', cursive;
 }
-
-      
     </style>
 
 
@@ -81,42 +73,47 @@ h1, h2, h3, h4, h5, h6 {
           <h1 style="color:white;">Learning Dashboard</h1>
           </div>
           </div>
-
-          <div class="card" style="background-image:url('img/passport2.png'); background-color: rgba(0, 0, 0, 0.3); ">
+          <div class="card" style="background-image:url('../img/passport2.png'); background-color: rgba(0, 0, 0, 0.3); ">
             <div class="card-body">
               <h5 class="chart-title"><i class="fas fa-plane fa-xs"></i>&nbsp;Your passport stamps</h5>
               <div class="row">
+              
                 <div class="progress" style="height: 20px; padding-left: 0 !important; border-radius:30px; background-color:#eefbfb;" >
-                  <div id="progress-bar" class="progress-bar" role="progressbar" style="background-color: orange; padding-left: 0 !important; width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; left: 0; font-size: 20px; margin-left: -10px; color:rgb(212, 137, 0); font-size:30px"></i> 
-                            25%</div>
+                  <div id="progress-bar" class="progress-bar" role="progressbar" style="background-color: orange; padding-left: 0 !important;" aria-valuemin="0" aria-valuemax="100"> 
+                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; font-size: 20px; margin-left: -10px; color:rgb(212, 137, 0); font-size:30px;" ></i> 
+               
+                 </div> 
                 </div>
-                <div class="col-md-4 d-flex flex-column align-items-center ">
+                <div class="col-md-4 d-flex flex-column align-items-center " id="image1">
                   <div class="text-align-center">
-                  <img id="image1" src="img/stamp_travel_novice.png" style="width:150px;">
+                  <img id="image1" src="../img/stamp_travel_novice.png" style="width:150px;">
                   <h4>Travel Novice</h4>
                   <p>You encountered > 20% of questions and are starting to get to know a country!</p>
                   <p style="color: lightslategrey; font-size:14px;">{44%} of learners have this stamp in their passport as well.</p>
-                  <div class="btn btn-outline-success">NEW</div> 
+                  <div class="btn btn-outline-success" id="novice_unlocked">NEW</div> 
+                  <div  class="btn btn-outline-secondary" id="novice" style="display:none;">TO BE UNLOCKED</div>
                 </div>
               </div>
           
                 <div class="col-md-4 d-flex flex-column align-items-center" id="image2">
                   <div class="text-align-center">
-                  <img src="img/stamp_adventurer.png" style="width:150px;" >
+                  <img src="../img/stamp_adventurer.png" style="width:150px;" >
                   <h4>Adventurer</h4>
                   <p>You explored 50% of questions and have lots of knowledge about Germany!</p>
                   <p style="color: lightslategrey; font-size:14px;">{14%} of learners have this stamp in their passport as well.</p>
-                  <div  class="btn btn-outline-secondary">TO BE UNLOCKED</div>
+                  <div  class="btn btn-outline-secondary" id="adventurer">TO BE UNLOCKED</div>
+                  <div class="btn btn-outline-success" id="adventurer_unlocked" style="display:none">NEW</div> 
                 </div>
                 </div>
           
                 <div class="col-md-4 d-flex flex-column align-items-center" id="image3">
                   <div class="text-align-center">
-                  <img src="img/stamp_globetrotter.png" style="width:150px;">
+                  <img src="../img/stamp_globetrotter.png" style="width:150px;">
                   <h4>Globetrotter</h4>
                   <p>You are a real expert on that country. What about visiting other countries as well?</p>
                   <p style="color: lightslategrey; font-size:14px;">{1.2%} of learners have this stamp in their passport as well.</p>
-                  <div  class="btn btn-outline-secondary">TO BE UNLOCKED</div>
+                  <div  class="btn btn-outline-secondary" id="globetrotter">TO BE UNLOCKED</div>
+                  <div class="btn btn-outline-success" id="globetrotter_unlocked" style="display:none">NEW</div> 
                 </div>
               </div>
               </div>
@@ -132,13 +129,11 @@ h1, h2, h3, h4, h5, h6 {
             <h5 class="chart-title">Progress in your first week</h5>
             <canvas id="gameChart"></canvas>
           </div>
-          <h6 style="padding-top:5%">Congratulations, you managed a {7}-day streak!</h6>
-             <p style="color: lightslategrey; font-size:14px;">{45%} of learners have achieved a {7}-day streak as well.</p>
+          <h6 style="padding-top:5%">Congratulations, you managed a ...-day streak!</h6>
+             <p style="color: lightslategrey; font-size:14px;">{45%} of learners have achieved a ...-day streak as well.</p>
         </div>
       </div>
     </div>
-
-
       <div class="col-md-6">
         <div class="card">
         <div class="card-body">
@@ -152,31 +147,20 @@ h1, h2, h3, h4, h5, h6 {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td id="name">Mark</td>
-                <td id="score">{50}</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>{Jacob}</td>
-                <td>{30}</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>{Mia}</td>
-                <td>{10}</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>{Lina}</td>
-                <td>{5}</td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td>{Hans}</td>
-                <td>{2}</td>
-              </tr>
+              <% if (typeof usersList != "undefined" && usersList) { %>
+              <% const sortedUsers = usersList.sort((a, b) => b.score - a.score); %>
+              <% const topUsers = sortedUsers.slice(0, 5); %>
+              <% topUsers.forEach((user, index) => { %>
+                <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><%= user.username %></td>
+                  <td><%= user.score %></td>
+                </tr>
+              <% }); %>
+              <% } else { %>
+                <p> No users found </p>
+              <% } %>
+              
             </tbody>
           </table>
         </div>
@@ -210,8 +194,6 @@ h1, h2, h3, h4, h5, h6 {
           </div>
   </div>
           
-
-
   <div class="col-md-4">
     <div class="card">
       <div class="card-body">
@@ -241,17 +223,30 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
     </div>
     <script>
 
-      // Load database into document
-document.addEventListener("DOMContentLoaded", function () {
 
-  //
-        document.querySelector(".username").innerText =
-          "Username: " + localStorage.getItem("username");
-      });
+var gameLabels = [];
+var gameScores = [];
 
-      // Generate placeholder data for the game chart
-      var gameLabels = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"];
-      var gameScores = [5, 10, 15, 20, 32, 8, 2];
+for (var i = 6; i >= 0; i--) {
+  var currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - i);
+  var month = currentDate.toLocaleString('default', { month: 'long' });
+  var day = currentDate.getDate();
+  var label = month + ", " + day;
+  gameLabels.push(label);
+
+  var dateKey = currentDate.toDateString();
+console.log(currentDate);
+
+if (typeof historyCountByDate !== "undefined" && historyCountByDate && historyCountByDate.hasOwnProperty(dateKey)) {
+  var historyCount = historyCountByDate[dateKey];
+  gameScores.push(historyCount);
+}
+else {
+  gameScores.push(0);
+}
+
+}
 
       // Create a bar chart for the game scores
       var gameCtx = document.getElementById("gameChart").getContext("2d");
@@ -278,9 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       });
 
-
-   
-
       // Generate placeholder data for the skills chart
       var skillsLabels = [
         "Vocabulary",
@@ -289,8 +281,28 @@ document.addEventListener("DOMContentLoaded", function () {
         "Facts",
         "History",
       ];
-      var skillsScores = [10, 15, 20, 6, 3];
+     var skillsScores = [];
 
+      
+if (typeof percentageVocabulary !== "undefined" && percentageVocabulary) {
+  skillsScores.push(JSON.parse(percentageVocabulary));
+}
+
+if (typeof percentageGeography !== "undefined" && percentageGeography) {
+  skillsScores.push(JSON.parse(percentageGeography));
+}
+
+if (typeof percentageCulture !== "undefined" && percentageCulture) {
+  skillsScores.push(JSON.parse(percentageCulture));
+}
+
+if (typeof percentageFacts !== "undefined" && percentageFacts) {
+  skillsScores.push(JSON.parse(percentageFacts));
+}
+
+if (typeof percentageHistory !== "undefined" && percentageHistory) {
+  skillsScores.push(JSON.parse(percentageHistory));
+}
       
 // Create a radar chart for student skills
 var skillsCtx = document.getElementById("skillsChart").getContext("2d");
@@ -312,8 +324,6 @@ new Chart(skillsCtx, {
     plugins: {
       tooltip: {
         callbacks: {
-
-
 label: function (context) {
   var label = context.dataset.label || "";
   var value = context.dataset.data[context.dataIndex];
@@ -343,17 +353,38 @@ label: function (context) {
 });
 
 
-
-            // Generate placeholder data for the skills chart
-      var skillsLabels = [
+         // Generate placeholder data for the skills chart
+         var skillsLabels = [
         "Vocabulary",
         "Geography",
         "Culture",
         "Facts",
         "History",
       ];
-      var skillsScores = [10, 15, 20, 6, 3];
+      var skillsScoresInd = [];
 
+      
+      if (typeof percentageVocabularyInd !== "undefined" && percentageVocabularyInd) {
+  skillsScoresInd.push(JSON.parse(percentageVocabularyInd));
+}
+
+if (typeof percentageGeographyInd !== "undefined" && percentageGeographyInd) {
+  skillsScoresInd.push(JSON.parse(percentageGeographyInd));
+}
+
+if (typeof percentageCultureInd !== "undefined" && percentageCultureInd) {
+  skillsScoresInd.push(JSON.parse(percentageCultureInd));
+}
+
+if (typeof percentageFactsInd !== "undefined" && percentageFactsInd) {
+  skillsScoresInd.push(JSON.parse(percentageFactsInd));
+}
+
+if (typeof percentageHistoryInd !== "undefined" && percentageHistoryInd) {
+  skillsScoresInd.push(JSON.parse(percentageHistoryInd));
+}
+   
+     
 // Create a radar chart for student skills
 var skillsCtxInd = document.getElementById("skillsChartIndividual").getContext("2d");
 new Chart(skillsCtxInd, {
@@ -363,7 +394,7 @@ new Chart(skillsCtxInd, {
     datasets: [
       {
         label: "Your Skills",
-        data: skillsScores,
+        data: skillsScoresInd,
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
@@ -375,20 +406,15 @@ new Chart(skillsCtxInd, {
       tooltip: {
         callbacks: {
 
-
 label: function (context) {
   var label = context.dataset.label || "";
   var value = context.dataset.data[context.dataIndex];
-
   if (label) {
     label += ": ";
   }
   label += value !== undefined ? value + "%" : "";
-
   return label;
 },
-
-        
         },
       },
     },
@@ -408,18 +434,38 @@ label: function (context) {
 
     
   var progressBar = document.getElementById("progress-bar");
+  var image1 = document.getElementById("image1");
   var image2 = document.getElementById("image2");
   var image3 = document.getElementById("image3");
+  var adventurer = document.getElementById("adventurer");
+  var globetrotter = document.getElementById("globetrotter");
+  var adventurer_unlocked = document.getElementById("adventurer_unlocked");
+  var globetrotter_unlocked = document.getElementById("globetrotter_unlocked");
+  var novice_unlocked = document.getElementById("novice_unlocked");
+  var novice = document.getElementById("novice");
 
   // Function to update the opacity of images based on progress
   function updateImageOpacity() {
     var progress = parseInt(progressBar.style.width);
-    if (progress <= 50) {
+    console.log(progress);
+    if (progress < 25) {
+      image1.style.opacity = "0.3";
       image2.style.opacity = "0.3";
       image3.style.opacity = "0.3";
+      adventurer_unlocked.display='none';
+      adventurer.display='block';
+    }
+    if (progress >= 25) {
+      image1.style.opacity = "1";
+      image2.style.opacity = "0.3";
+      image3.style.opacity = "0.3";
+      adventurer.display='none';
+      adventurer_unlocked.display='block';
     } else {
       image2.style.opacity = "1";
       image3.style.opacity = "1";
+      globetrotter.display='none';
+      globetrotter_unlocked.display='block';
     }
   }
 
@@ -441,8 +487,35 @@ label: function (context) {
       var skillsScores = [10, 15, 20, 6, 3];
 
       // Generate placeholder data for the user chart
-      var userLabels = ["Correct", "Close", "False", "Still open"];
-      var userScores = [38, 12, 2, 10];
+      var userLabels = ["Correct", "Close", "False"];
+
+
+
+var userScores = [];
+if (typeof accuracy100 !== "undefined" && accuracy100) {
+  userScores.push(JSON.parse(accuracy100));
+}
+
+if (typeof accuracy60 !== "undefined" && accuracy60) {
+  userScores.push(JSON.parse(accuracy60));
+}
+
+if (typeof accuracy0 !== "undefined" && accuracy0) {
+  userScores.push(JSON.parse(accuracy0));
+}
+
+
+     var userLabels = ["Correct", "Close", "False"];
+  
+/*
+  userScores.push(2);
+  userScores.push(3);
+  userScores.push(4);
+      /*
+    userScores.forEach(score => { 
+    userScores.push(score);
+});*/
+
 
       // Create a pie chart for the user scores
       var userCtx = document.getElementById("userChart").getContext("2d");
@@ -456,36 +529,31 @@ label: function (context) {
               backgroundColor: [
                 "#6ba428",
                 "#fbd702",
-                "#eb5e3e",
-                "#b8b8ba"
+                "#eb5e3e"
               ],
               hoverBackgroundColor: [
                 "#4f7729",
                 "#fbca00",
-                "#c95136",
-                "#8c8b92"
+                "#c95136"
               ],
             },
           ],
         },
       });
 
+      
   var progressIcon = document.getElementById("progress-icon");
 
   // Function to update the progress bar and icon based on the progress
+ 
   function updateProgressBar(progress) {
-    progressBar.style.width = progress + "%";
-    progressIcon.style.left = progress + "%";
+  if (typeof answeredPercentage !== "undefined" && answeredPercentage) {
+    answeredPercentage = Math.floor(progress * 100);
+    progwidth = answeredPercentage.toFixed(0) + "%";
+    progressBar.style.width = progwidth;
+    progressIcon.style.marginLeft = progwidth;
   }
-
-  // Call the function initially
-  updateProgressBar(25);
-
-  // Call the function whenever the progress bar width changes
-  progressBar.addEventListener("transitionend", function () {
-    var progress = parseInt(progressBar.style.width);
-    updateProgressBar(progress);
-  });
+}
 
     </script>
   </body>
