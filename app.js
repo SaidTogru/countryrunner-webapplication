@@ -12,12 +12,17 @@ app.get('/dashboard', (req, res) => {
 });*/
 
 app.get('/dashboard-data', async (req, res) => {
+  
   try {
+
     const users = await User.find({});
+    const currentUser = await CurrentUser.findOne({}); // Assuming there is only one CurrentUser object
+    console.log("Username:", currentUser.username);
+
      // Retrieve and calculate other required data
-    const accuracy100 = await History.countDocuments({accuracy: 100});
-    const accuracy60 = await History.countDocuments({accuracy:60});
-    const accuracy0 = await History.countDocuments({accuracy: 0});
+    const accuracy100 = await History.countDocuments({accuracy: 100,  username: `${currentUser.username}`});
+    const accuracy60 = await History.countDocuments({accuracy:60,  username: `${currentUser.username}`});
+    const accuracy0 = await History.countDocuments({accuracy: 0,  username: `${currentUser.username}`});
     const historyEntries = await History.find({}).sort({ timestamp: -1 });
 
     // Create an object to store the count for each date
@@ -29,7 +34,8 @@ app.get('/dashboard-data', async (req, res) => {
 
       if (historyCountByDate[dateKey]) {
         // Increment the count for the date
-        historyCountByDate[dateKey]++;
+        historyCountByDate[dateKey][currentUser.username] = (historyCountByDate[dateKey][currentUser.username] || 0) + 1;
+       
       } else {
         // Initialize the count for the date
         historyCountByDate[dateKey] = 1;
@@ -63,7 +69,7 @@ app.get('/dashboard-data', async (req, res) => {
 
     //how much has been answered (how many documents are in history table?)
     //=> TBD: check next to "category" also if "history.username == CurrentUser.username"
-    const answered = await History.countDocuments({});
+    const answered = await History.countDocuments({username: `${currentUser.username}`});
     const answeredPercentage = (answered / 60 * 100).toFixed(2);
 
     const categoryGeography = await History.countDocuments({category: "geography"});
@@ -86,17 +92,18 @@ app.get('/dashboard-data', async (req, res) => {
 
     //Individual
     //TBD: check next to "category" also if "user.username == CurrentUser.username"
-    const categoryGeographyInd = await History.countDocuments({category: "geography"});
-    const categoryVocabularyInd = await History.countDocuments({category: "vocabulary"});
-    const categoryFactsInd = await History.countDocuments({category: "facts"});
-    const categoryCultureInd = await History.countDocuments({category: "culture"});
-    const categoryHistoryInd = await History.countDocuments({category: "history"});
+    const categoryGeographyInd = await History.countDocuments({category: "geography",  username: `${currentUser.username}`});
+    const categoryVocabularyInd = await History.countDocuments({category: "vocabulary",   username: `${currentUser.username}`});
+    const categoryFactsInd = await History.countDocuments({category: "facts",  username: `${currentUser.username}`});
+    const categoryCultureInd = await History.countDocuments({category: "culture",   username: `${currentUser.username}`});
+    const categoryHistoryInd = await History.countDocuments({category: "history",  username: `${currentUser.username}` });
+  
 
-    const skillGeographyInd = await History.countDocuments({category: "geography", accuracy: 100});
-    const skillVocabularyInd = await History.countDocuments({category: "vocabulary", accuracy: 100});
-    const skillFactsInd = await History.countDocuments({category: "facts", accuracy: 100});
-    const skillCultureInd = await History.countDocuments({category: "culture", accuracy: 100});
-    const skillHistoryInd = await History.countDocuments({category: "history", accuracy: 100});
+    const skillGeographyInd = await History.countDocuments({category: "geography", accuracy: 100,  username: `${currentUser.username}`});
+    const skillVocabularyInd = await History.countDocuments({category: "vocabulary", accuracy: 100,  username: `${currentUser.username}`});
+    const skillFactsInd = await History.countDocuments({category: "facts", accuracy: 100,  username: `${currentUser.username}`});
+    const skillCultureInd = await History.countDocuments({category: "culture", accuracy: 100,  username: `${currentUser.username}`});
+    const skillHistoryInd = await History.countDocuments({category: "history", accuracy: 100,  username: `${currentUser.username}`});
    
     const percentageVocabularyInd = (skillVocabularyInd / categoryVocabularyInd * 100).toFixed(2);
     const percentageGeographyInd = (skillGeographyInd / categoryGeographyInd * 100).toFixed(2);
@@ -128,11 +135,11 @@ app.get('/dashboard-data', async (req, res) => {
       percentageFactsInd:percentageFactsInd,
       percentageCultureInd:percentageCultureInd,
       percentageHistoryInd:percentageHistoryInd,
-      skillsScoresInd:skillsScoresInd
+      skillsScoresInd:skillsScoresInd,
+      currentUser: currentUser
       // Include other data properties
     };
 
-   
     res.render('dashboard', { data });
       
   } catch (error) {
@@ -178,11 +185,20 @@ const userSchema = new mongoose.Schema({
   score: Number
 });
 
+const currentSchema = new mongoose.Schema({
+  _id: String,
+  username: String
+});
+
+
 // Create the User model
 const User = mongoose.model('User', userSchema, 'user');
 
 // Create the History model
 const History = mongoose.model('History', historySchema, 'history');
+
+// Create the History model
+const CurrentUser = mongoose.model('CurrentUser', currentSchema, 'Current_User');
 
 async function connectToDatabase() {
 
@@ -203,8 +219,6 @@ app.get('/', async (req, res) => {
  try {
   users.forEach(user => {
     console.log("Username:", user.username);
-    
-   
     });
   } catch (error) {
     console.error(error);

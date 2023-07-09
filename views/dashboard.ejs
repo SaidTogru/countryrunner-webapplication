@@ -70,12 +70,14 @@
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Passion One', cursive;
 }
+
+
     </style>
 
 
 <div class="col-md-8">
         <div class="row">
-          <h1 style="color:white;">Learning Dashboard</h1>
+          <h1 style="color:white;">Learning Dashboard of  <%= data.currentUser.username %></h1></h1>
           </div>
           </div>
           <div class="card" style="background-image:url('../img/passport2.png'); background-color: rgba(0, 0, 0, 0.3); ">
@@ -84,7 +86,7 @@ h1, h2, h3, h4, h5, h6 {
               <div class="row">
                 <div class="progress" style="height: 20px; padding-left: 0 !important; border-radius:30px; background-color:#eefbfb;" >
                   <div id="progress-bar" class="progress-bar" role="progressbar" style="background-color: orange; padding-left: 0 !important; width: <%=data.answeredPercentage%>%;" aria-valuemin="0" aria-valuemax="100">
-                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; font-size: 20px; margin-left: -35px; color:rgb(212, 137, 0); font-size:30px; left: <%=data.answeredPercentage%>%;" ></i> 
+                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; font-size: 20px; color:rgb(212, 137, 0); font-size:30px; left: <%=data.answeredPercentage%>%;" ></i> 
                   <%=data.answeredPercentage %>  </div> 
                 </div>
                 <div class="col-md-4 d-flex flex-column align-items-center " id="image1">
@@ -93,8 +95,8 @@ h1, h2, h3, h4, h5, h6 {
                   <h4>Travel Novice</h4>
                   <p>You encountered > 20% of questions and are starting to get to know a country!</p>
                   <p style="color: lightslategrey; font-size:14px;">{44%} of learners have this stamp in their passport as well.</p>
-                  <div class="btn btn-outline-success" id="novice_unlocked">NEW</div> 
-                  <div  class="btn btn-outline-secondary" id="novice">TO BE UNLOCKED</div>
+                  <div class="btn btn-outline-success" id="novice_unlocked" style="pointer-events: none;">NEW</div> 
+                  <div  class="btn btn-outline-secondary" id="novice" style="pointer-events: none;">TO BE UNLOCKED</div>
                 </div>
               </div>
           
@@ -104,8 +106,8 @@ h1, h2, h3, h4, h5, h6 {
                   <h4>Adventurer</h4>
                   <p>You explored 50% of questions and have lots of knowledge about Germany!</p>
                   <p style="color: lightslategrey; font-size:14px;">{14%} of learners have this stamp in their passport as well.</p>
-                  <div class="btn btn-outline-success" id="adventurer_unlocked">NEW</div> 
-                  <div  class="btn btn-outline-secondary" id="adventurer">TO BE UNLOCKED</div>
+                  <div class="btn btn-outline-success" id="adventurer_unlocked" style="pointer-events: none;">NEW</div> 
+                  <div  class="btn btn-outline-secondary" id="adventurer" style="pointer-events: none;">TO BE UNLOCKED</div>
 
                 </div>
                 </div>
@@ -116,8 +118,8 @@ h1, h2, h3, h4, h5, h6 {
                   <h4>Globetrotter</h4>
                   <p>You are a real expert on that country. What about visiting other countries as well?</p>
                   <p style="color: lightslategrey; font-size:14px;">{1.2%} of learners have this stamp in their passport as well.</p>
-                  <div  class="btn btn-outline-secondary" id="globetrotter">TO BE UNLOCKED</div>
-                  <div class="btn btn-outline-success" id="globetrotter_unlocked">NEW</div> 
+                  <div  class="btn btn-outline-secondary" id="globetrotter" style="pointer-events: none;">TO BE UNLOCKED</div>
+                  <div class="btn btn-outline-success" id="globetrotter_unlocked" style="pointer-events: none;">NEW</div> 
                 </div>
               </div>
               </div>
@@ -225,7 +227,6 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
 
 
 var historyCountByDate = JSON.parse('<%- JSON.stringify(data.historyCountByDate) %>');
-
 var gameLabels = [];
 var gameScores = [];
 
@@ -239,6 +240,7 @@ for (var i = 6; i >= 0; i--) {
 
   var dateKey = currentDate.toDateString();
 console.log(currentDate);
+console.log("hey");
 
 if (historyCountByDate.hasOwnProperty(dateKey)) {
   var historyCount = historyCountByDate[dateKey];
@@ -471,7 +473,7 @@ label: function (context) {
       adventurer_unlocked.style.display='none';
       globetrotter_unlocked.style.display='none';
     }
-    if (progress >= 50) {
+    if (progress >= 50 && progress < 100) {
       image1.style.opacity = "1";
       image2.style.opacity = "1";
       image3.style.opacity = "0.3";
@@ -480,10 +482,10 @@ label: function (context) {
       adventurer.style.display='none';
       globetrotter.style.display='initial';
 
-      novice_unlocked.style.display ='initial';
+      novice_unlocked.style.display ='none';
       adventurer_unlocked.style.display='initial';
       globetrotter_unlocked.style.display='none';
-    } if (progress >=100) {
+    } if (progress >= 100) {
       image1.style.opacity = "1";
       image2.style.opacity = "1";
       image3.style.opacity = "1";
@@ -492,8 +494,8 @@ label: function (context) {
       adventurer.style.display='none';
       globetrotter.style.display='none';
 
-      novice_unlocked.style.display ='initial';
-      globetrotter_unlocked.style.display='initial';
+      novice_unlocked.style.display ='none';
+      globetrotter_unlocked.style.display='none';
       adventurer_unlocked.style.display='initial';
     }
   }

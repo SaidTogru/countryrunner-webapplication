@@ -148,7 +148,7 @@
             Possible answer: "Rhine", "Elbe", "Spree"
             correct_answer: "Spree"
             My answer: "Spree"
-            Can you give me feedback about it and some more information?"`;
+            Can you give me feedback about it and some more information? Please put the question into an <h2> tag and the rest of the answer into a <p> tag."`;
           }
           //Explain the right answer
           if (cardType == "How can you improve?") {
@@ -161,7 +161,7 @@
             {
               method: "POST",
               headers: {
-                Authorization: "Bearer API_KEY", // Get from .env
+                Authorization: "Bearer APIhere", // Get from .env
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
