@@ -5,6 +5,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
 
+<!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
 <!-- Google Fonts -->
 <link
   href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
@@ -77,12 +82,10 @@ h1, h2, h3, h4, h5, h6 {
             <div class="card-body">
               <h5 class="chart-title"><i class="fas fa-plane fa-xs"></i>&nbsp;Your passport stamps</h5>
               <div class="row">
-              
                 <div class="progress" style="height: 20px; padding-left: 0 !important; border-radius:30px; background-color:#eefbfb;" >
-                  <div id="progress-bar" class="progress-bar" role="progressbar" style="background-color: orange; padding-left: 0 !important;" aria-valuemin="0" aria-valuemax="100"> 
-                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; font-size: 20px; margin-left: -10px; color:rgb(212, 137, 0); font-size:30px;" ></i> 
-               
-                 </div> 
+                  <div id="progress-bar" class="progress-bar" role="progressbar" style="background-color: orange; padding-left: 0 !important; width: <%=data.answeredPercentage%>%;" aria-valuemin="0" aria-valuemax="100">
+                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; font-size: 20px; margin-left: -35px; color:rgb(212, 137, 0); font-size:30px; left: <%=data.answeredPercentage%>%;" ></i> 
+                  <%=data.answeredPercentage %>  </div> 
                 </div>
                 <div class="col-md-4 d-flex flex-column align-items-center " id="image1">
                   <div class="text-align-center">
@@ -91,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
                   <p>You encountered > 20% of questions and are starting to get to know a country!</p>
                   <p style="color: lightslategrey; font-size:14px;">{44%} of learners have this stamp in their passport as well.</p>
                   <div class="btn btn-outline-success" id="novice_unlocked">NEW</div> 
-                  <div  class="btn btn-outline-secondary" id="novice" style="display:none;">TO BE UNLOCKED</div>
+                  <div  class="btn btn-outline-secondary" id="novice">TO BE UNLOCKED</div>
                 </div>
               </div>
           
@@ -101,8 +104,9 @@ h1, h2, h3, h4, h5, h6 {
                   <h4>Adventurer</h4>
                   <p>You explored 50% of questions and have lots of knowledge about Germany!</p>
                   <p style="color: lightslategrey; font-size:14px;">{14%} of learners have this stamp in their passport as well.</p>
+                  <div class="btn btn-outline-success" id="adventurer_unlocked">NEW</div> 
                   <div  class="btn btn-outline-secondary" id="adventurer">TO BE UNLOCKED</div>
-                  <div class="btn btn-outline-success" id="adventurer_unlocked" style="display:none">NEW</div> 
+
                 </div>
                 </div>
           
@@ -113,7 +117,7 @@ h1, h2, h3, h4, h5, h6 {
                   <p>You are a real expert on that country. What about visiting other countries as well?</p>
                   <p style="color: lightslategrey; font-size:14px;">{1.2%} of learners have this stamp in their passport as well.</p>
                   <div  class="btn btn-outline-secondary" id="globetrotter">TO BE UNLOCKED</div>
-                  <div class="btn btn-outline-success" id="globetrotter_unlocked" style="display:none">NEW</div> 
+                  <div class="btn btn-outline-success" id="globetrotter_unlocked">NEW</div> 
                 </div>
               </div>
               </div>
@@ -129,8 +133,8 @@ h1, h2, h3, h4, h5, h6 {
             <h5 class="chart-title">Progress in your first week</h5>
             <canvas id="gameChart"></canvas>
           </div>
-          <h6 style="padding-top:5%">Congratulations, you managed a ...-day streak!</h6>
-             <p style="color: lightslategrey; font-size:14px;">{45%} of learners have achieved a ...-day streak as well.</p>
+          <h6 style="padding-top:5%">Congratulations, you managed a <%=data.streak%>-day streak!</h6>
+             <p style="color: lightslategrey; font-size:14px;">{45%} of learners have achieved a <%=data.streak%>-day streak as well.</p>
         </div>
       </div>
     </div>
@@ -147,8 +151,7 @@ h1, h2, h3, h4, h5, h6 {
               </tr>
             </thead>
             <tbody>
-              <% if (typeof usersList != "undefined" && usersList) { %>
-              <% const sortedUsers = usersList.sort((a, b) => b.score - a.score); %>
+              <% const sortedUsers = data.usersList.sort((a, b) => b.score - a.score); %>
               <% const topUsers = sortedUsers.slice(0, 5); %>
               <% topUsers.forEach((user, index) => { %>
                 <tr>
@@ -157,9 +160,6 @@ h1, h2, h3, h4, h5, h6 {
                   <td><%= user.score %></td>
                 </tr>
               <% }); %>
-              <% } else { %>
-                <p> No users found </p>
-              <% } %>
               
             </tbody>
           </table>
@@ -224,6 +224,8 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
     <script>
 
 
+var historyCountByDate = JSON.parse('<%- JSON.stringify(data.historyCountByDate) %>');
+
 var gameLabels = [];
 var gameScores = [];
 
@@ -238,7 +240,7 @@ for (var i = 6; i >= 0; i--) {
   var dateKey = currentDate.toDateString();
 console.log(currentDate);
 
-if (typeof historyCountByDate !== "undefined" && historyCountByDate && historyCountByDate.hasOwnProperty(dateKey)) {
+if (historyCountByDate.hasOwnProperty(dateKey)) {
   var historyCount = historyCountByDate[dateKey];
   gameScores.push(historyCount);
 }
@@ -247,6 +249,11 @@ else {
 }
 
 }
+
+var maxScore = Math.max(...gameScores); // Calculate the maximum value from the dataset
+
+var yAxisMax = Math.ceil(maxScore / 5) * 5; 
+
 
       // Create a bar chart for the game scores
       var gameCtx = document.getElementById("gameChart").getContext("2d");
@@ -268,6 +275,10 @@ else {
           scales: {
             y: {
               beginAtZero: true,
+              max: yAxisMax,
+              ticks: {
+          stepSize: 1, // Set the desired step size for the y-axis
+        },
             },
           },
         },
@@ -281,28 +292,19 @@ else {
         "Facts",
         "History",
       ];
-     var skillsScores = [];
 
-      
-if (typeof percentageVocabulary !== "undefined" && percentageVocabulary) {
-  skillsScores.push(JSON.parse(percentageVocabulary));
-}
+      var percentageVocabulary = '<%- JSON.stringify(data.percentageVocabulary) %>';
+      var percentageGeography = '<%- JSON.stringify(data.percentageGeography) %>';
+      var percentageCulture = '<%- JSON.stringify(data.percentageCulture) %>';
+      var percentageFacts = '<%- JSON.stringify(data.percentageFacts) %>';
+      var percentageHistory = '<%- JSON.stringify(data.percentageHistory) %>';
+      var skillsScores = [];
+skillsScores.push(JSON.parse(percentageVocabulary));
+skillsScores.push(JSON.parse(percentageGeography));
+skillsScores.push(JSON.parse(percentageCulture));
+skillsScores.push(JSON.parse(percentageFacts));
+skillsScores.push(JSON.parse(percentageHistory));
 
-if (typeof percentageGeography !== "undefined" && percentageGeography) {
-  skillsScores.push(JSON.parse(percentageGeography));
-}
-
-if (typeof percentageCulture !== "undefined" && percentageCulture) {
-  skillsScores.push(JSON.parse(percentageCulture));
-}
-
-if (typeof percentageFacts !== "undefined" && percentageFacts) {
-  skillsScores.push(JSON.parse(percentageFacts));
-}
-
-if (typeof percentageHistory !== "undefined" && percentageHistory) {
-  skillsScores.push(JSON.parse(percentageHistory));
-}
       
 // Create a radar chart for student skills
 var skillsCtx = document.getElementById("skillsChart").getContext("2d");
@@ -353,8 +355,14 @@ label: function (context) {
 });
 
 
-         // Generate placeholder data for the skills chart
-         var skillsLabels = [
+var percentageVocabularyInd = '<%- JSON.stringify(data.percentageVocabularyInd) %>';
+      var percentageGeographyInd = '<%- JSON.stringify(data.percentageGeographyInd) %>';
+      var percentageCultureInd = '<%- JSON.stringify(data.percentageCultureInd) %>';
+      var percentageFactsInd = '<%- JSON.stringify(data.percentageFactsInd) %>';
+      var percentageHistoryInd = '<%- JSON.stringify(data.percentageHistoryInd) %>';
+
+            // Generate placeholder data for the skills chart
+      var skillsLabels = [
         "Vocabulary",
         "Geography",
         "Culture",
@@ -363,28 +371,13 @@ label: function (context) {
       ];
       var skillsScoresInd = [];
 
+      skillsScoresInd.push(JSON.parse(percentageVocabularyInd));
+      skillsScoresInd.push(JSON.parse(percentageGeographyInd));
+      skillsScoresInd.push(JSON.parse(percentageCultureInd));
+      skillsScoresInd.push(JSON.parse(percentageFactsInd));
+      skillsScoresInd.push(JSON.parse(percentageHistoryInd));
       
-      if (typeof percentageVocabularyInd !== "undefined" && percentageVocabularyInd) {
-  skillsScoresInd.push(JSON.parse(percentageVocabularyInd));
-}
 
-if (typeof percentageGeographyInd !== "undefined" && percentageGeographyInd) {
-  skillsScoresInd.push(JSON.parse(percentageGeographyInd));
-}
-
-if (typeof percentageCultureInd !== "undefined" && percentageCultureInd) {
-  skillsScoresInd.push(JSON.parse(percentageCultureInd));
-}
-
-if (typeof percentageFactsInd !== "undefined" && percentageFactsInd) {
-  skillsScoresInd.push(JSON.parse(percentageFactsInd));
-}
-
-if (typeof percentageHistoryInd !== "undefined" && percentageHistoryInd) {
-  skillsScoresInd.push(JSON.parse(percentageHistoryInd));
-}
-   
-     
 // Create a radar chart for student skills
 var skillsCtxInd = document.getElementById("skillsChartIndividual").getContext("2d");
 new Chart(skillsCtxInd, {
@@ -446,26 +439,62 @@ label: function (context) {
 
   // Function to update the opacity of images based on progress
   function updateImageOpacity() {
+
     var progress = parseInt(progressBar.style.width);
     console.log(progress);
+  
+    
     if (progress < 25) {
       image1.style.opacity = "0.3";
       image2.style.opacity = "0.3";
       image3.style.opacity = "0.3";
-      adventurer_unlocked.display='none';
-      adventurer.display='block';
+
+      novice.style.display='initial';
+      adventurer.style.display='initial';
+      globetrotter.style.display='initial';
+
+
+      adventurer_unlocked.style.display='none';
+      globetrotter_unlocked.style.display='none';
+      novice_unlocked.style.display='none';
     }
-    if (progress >= 25) {
+    if (answeredPercentage >= 25) {
       image1.style.opacity = "1";
-      image2.style.opacity = "0.3";
+      image2.style.opacity = "1";
       image3.style.opacity = "0.3";
-      adventurer.display='none';
-      adventurer_unlocked.display='block';
-    } else {
+
+      novice.style.display='none';
+      adventurer.style.display='initial';
+      globetrotter.style.display='initial';
+
+      novice_unlocked.style.display ='initial';
+      adventurer_unlocked.style.display='none';
+      globetrotter_unlocked.style.display='none';
+    }
+    if (progress >= 50) {
+      image1.style.opacity = "1";
+      image2.style.opacity = "1";
+      image3.style.opacity = "0.3";
+
+      novice.style.display='none';
+      adventurer.style.display='none';
+      globetrotter.style.display='initial';
+
+      novice_unlocked.style.display ='initial';
+      adventurer_unlocked.style.display='initial';
+      globetrotter_unlocked.style.display='none';
+    } if (progress >=100) {
+      image1.style.opacity = "1";
       image2.style.opacity = "1";
       image3.style.opacity = "1";
-      globetrotter.display='none';
-      globetrotter_unlocked.display='block';
+
+      novice.style.display='none';
+      adventurer.style.display='none';
+      globetrotter.style.display='none';
+
+      novice_unlocked.style.display ='initial';
+      globetrotter_unlocked.style.display='initial';
+      adventurer_unlocked.style.display='initial';
     }
   }
 
@@ -490,19 +519,13 @@ label: function (context) {
       var userLabels = ["Correct", "Close", "False"];
 
 
-
+var accuracy100 = '<%- JSON.stringify(data.accuracy100) %>';
+var accuracy60 = '<%- JSON.stringify(data.accuracy60) %>';
+var accuracy0 = '<%- JSON.stringify(data.accuracy0) %>';
 var userScores = [];
-if (typeof accuracy100 !== "undefined" && accuracy100) {
-  userScores.push(JSON.parse(accuracy100));
-}
-
-if (typeof accuracy60 !== "undefined" && accuracy60) {
-  userScores.push(JSON.parse(accuracy60));
-}
-
-if (typeof accuracy0 !== "undefined" && accuracy0) {
-  userScores.push(JSON.parse(accuracy0));
-}
+userScores.push(JSON.parse(accuracy100));
+userScores.push(JSON.parse(accuracy60));
+userScores.push(JSON.parse(accuracy0));
 
 
      var userLabels = ["Correct", "Close", "False"];
@@ -542,17 +565,19 @@ if (typeof accuracy0 !== "undefined" && accuracy0) {
       });
 
       
+  var answeredPercentage= '<%- JSON.stringify(data.answeredPercentage) %>';
+
   var progressIcon = document.getElementById("progress-icon");
 
   // Function to update the progress bar and icon based on the progress
- 
+
+  console.log(answeredPercentage);
+
   function updateProgressBar(progress) {
-  if (typeof answeredPercentage !== "undefined" && answeredPercentage) {
-    answeredPercentage = Math.floor(progress * 100);
-    progwidth = answeredPercentage.toFixed(0) + "%";
-    progressBar.style.width = progwidth;
-    progressIcon.style.marginLeft = progwidth;
-  }
+  answeredPercentage = Math.floor(progress * 100);
+  progwidth = answeredPercentage.toFixed(0) + "%";
+  progressBar.style.width = progwidth;
+  progressIcon.style.marginLeft = progwidth;
 }
 
     </script>

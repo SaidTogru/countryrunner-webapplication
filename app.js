@@ -6,75 +6,15 @@ const mongoose = require('mongoose');
 
 const app = express(); // Create an Express app
 
-// Set the static directory for serving HTML files
-app.use(express.static(__dirname + '/public'));
-
-// Define a route for the dashboard page
+/* Define a route for the dashboard page
 app.get('/dashboard', (req, res) => {
   res.render('dashboard');
-});
+});*/
 
-app.use(express.static(path.join(__dirname, 'img')));
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-//kill nodejs instances with: taskkill /f /im node.exe
-
-const uri = "mongodb+srv://projectcountryrunner:hierPWrein@cluster0.jr9krae.mongodb.net/countryrunner?retryWrites=true&w=majority";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-const historySchema = new mongoose.Schema({
-  _id: String,
-  username: String,
-  timestamp: String,
-  category: String,
-  question: String,
-  correct_answer: Boolean,
-  accuracy: Number,
-  reward: Number
-});
-
-// Define the user schema
-const userSchema = new mongoose.Schema({
-  _id: String,
-  username: String,
-  score: Number
-});
-
-// Create the User model
-const User = mongoose.model('User', userSchema, 'user');
-
-// Create the History model
-const History = mongoose.model('History', historySchema, 'history');
-
-async function connectToDatabase() {
-
+app.get('/dashboard-data', async (req, res) => {
   try {
-    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log("Connected to MongoDB!");
-
-    app.listen(3000, () => {
-      console.log('Server is listening on port 3000');
-    });
-  } catch (error) {
-    console.error("Failed to connect to MongoDB:", error);
-  }
-}
-
-app.get('/', async (req, res) => {
-
-  try {
-
     const users = await User.find({});
-
+     // Retrieve and calculate other required data
     const accuracy100 = await History.countDocuments({accuracy: 100});
     const accuracy60 = await History.countDocuments({accuracy:60});
     const accuracy0 = await History.countDocuments({accuracy: 0});
@@ -168,7 +108,7 @@ app.get('/', async (req, res) => {
     var skillsScores = [percentageVocabulary, percentageGeography, percentageFacts, percentageCulture, percentageHistory];
     var skillsScoresInd = [percentageVocabularyInd, percentageGeographyInd, percentageFactsInd, percentageCultureInd, percentageHistoryInd];
     
-    res.render('dashboard', { 
+    const data = {
       usersList: users, 
       accuracy100: accuracy100, 
       accuracy60: accuracy60, 
@@ -189,10 +129,82 @@ app.get('/', async (req, res) => {
       percentageCultureInd:percentageCultureInd,
       percentageHistoryInd:percentageHistoryInd,
       skillsScoresInd:skillsScoresInd
+      // Include other data properties
+    };
+
+   
+    res.render('dashboard', { data });
+      
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+// Set the static directory for serving HTML files
+app.use(express.static(__dirname + '/public'));
+
+app.use(express.static(path.join(__dirname, 'img')));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+//kill nodejs instances with: taskkill /f /im node.exe
+const uri = "mongodb+srv://projectcountryrunner:PW@cluster0.jr9krae.mongodb.net/countryrunner?retryWrites=true&w=majority";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+const historySchema = new mongoose.Schema({
+  _id: String,
+  username: String,
+  timestamp: String,
+  category: String,
+  question: String,
+  correct_answer: Boolean,
+  accuracy: Number,
+  reward: Number
+});
+
+// Define the user schema
+const userSchema = new mongoose.Schema({
+  _id: String,
+  username: String,
+  score: Number
+});
+
+// Create the User model
+const User = mongoose.model('User', userSchema, 'user');
+
+// Create the History model
+const History = mongoose.model('History', historySchema, 'history');
+
+async function connectToDatabase() {
+
+  try {
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("Connected to MongoDB!");
+
+    app.listen(3000, () => {
+      console.log('Server is listening on port 3000');
     });
+  } catch (error) {
+    console.error("Failed to connect to MongoDB:", error);
+  }
+}
+
+app.get('/', async (req, res) => {
+
+ try {
+  users.forEach(user => {
+    console.log("Username:", user.username);
     
-    users.forEach(user => {
-      console.log("Username:", user.username);
+   
     });
   } catch (error) {
     console.error(error);
