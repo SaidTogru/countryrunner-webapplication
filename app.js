@@ -24,11 +24,27 @@ app.get('/dashboard-data', async (req, res) => {
       let count50 = 0;
       let count100 = 0;
 
+      const totalGraphicalHotspots = await GraphicalHotspot.countDocuments();
+      const totalImagebased = await ImageBased.countDocuments();
+      const totalMultipleChoice = await MultipleChoice.countDocuments();
+      const totalMultipleResponse = await MultipleResponse.countDocuments();
+      const totalShortText = await ShortText.countDocuments();
+
+      const totalQuestions = totalGraphicalHotspots+totalImagebased+totalMultipleChoice+totalMultipleResponse+totalShortText;
+      console.log(totalGraphicalHotspots);
+      console.log(totalImagebased);
+      console.log(totalMultipleChoice);
+      console.log(totalMultipleResponse);
+      console.log(totalShortText);
+      console.log(totalQuestions);
+
+
       for (const user of users) {
           const answered = await History.countDocuments({
               username: user.username
           });
-          const answeredPercentageAll = (answered / 60 * 100).toFixed(2);
+        
+          const answeredPercentageAll = (answered / totalQuestions * 100).toFixed(2);
 
           // Check the ranges for different percentages
           if (parseFloat(answeredPercentageAll) > 20) {
@@ -55,8 +71,8 @@ app.get('/dashboard-data', async (req, res) => {
           accuracy: 100,
           username: `${currentUser.username}`
       });
-      const accuracy60 = await History.countDocuments({
-          accuracy: 60,
+      const accuracy50 = await History.countDocuments({
+          accuracy: 50,
           username: `${currentUser.username}`
       });
       const accuracy0 = await History.countDocuments({
@@ -124,8 +140,8 @@ app.get('/dashboard-data', async (req, res) => {
       const answered = await History.countDocuments({
           username: `${currentUser.username}`
       });
-      const answeredPercentage = (answered / 60 * 100).toFixed(2);
-
+      
+      const answeredPercentage = (answered / totalQuestions * 100).toFixed(2);
 
       const categoryGeography = await History.countDocuments({
           category: "geography"
@@ -225,14 +241,14 @@ app.get('/dashboard-data', async (req, res) => {
       const percentageCultureInd = (skillCultureInd / categoryCultureInd * 100).toFixed(2);
       const percentageHistoryInd = (skillHistoryInd / categoryHistoryInd * 100).toFixed(2);
 
-      const userScores = [accuracy100, accuracy60, accuracy0];
+      const userScores = [accuracy100, accuracy50, accuracy0];
       var skillsScores = [percentageVocabulary, percentageGeography, percentageFacts, percentageCulture, percentageHistory];
       var skillsScoresInd = [percentageVocabularyInd, percentageGeographyInd, percentageFactsInd, percentageCultureInd, percentageHistoryInd];
 
       const data = {
           usersList: users,
           accuracy100: accuracy100,
-          accuracy60: accuracy60,
+          accuracy50: accuracy50,
           accuracy0: accuracy0,
           percentageGeography: percentageGeography,
           percentageHistory: percentageHistory,
@@ -310,6 +326,48 @@ const currentSchema = new mongoose.Schema({
   username: String
 });
 
+const graphicalHotspotSchema = new mongoose.Schema({
+    _id: String,
+    question: String
+  });
+
+  const imagebasedSchema = new mongoose.Schema({
+    _id: String,
+    item_type: String,
+    category: String,
+    question: String,
+    image_url: String,
+    options: Array,
+    correct_responses: Array
+  });
+
+  const multiplechoiceSchema = new mongoose.Schema({
+    _id: String,
+    item_type: String,
+    question: String,
+    options: Array,
+    correct_responses: Array,
+    category: String
+  });
+
+  const multipleresponseSchema = new mongoose.Schema({
+    _id: String,
+    item_type: String,
+    category: String,
+    question: String,
+    options: Array,
+    correct_responses: Array
+  });
+
+  const shorttextSchema = new mongoose.Schema({
+    _id: String,
+    item_type: String,
+    question: String,
+    category: String,
+    max_length: Number,
+    correct_answer: Array
+  });
+
 
 // Create the User model
 const User = mongoose.model('User', userSchema, 'user');
@@ -317,8 +375,23 @@ const User = mongoose.model('User', userSchema, 'user');
 // Create the History model
 const History = mongoose.model('History', historySchema, 'history');
 
-// Create the History model
+// Create the CurrentUser model
 const CurrentUser = mongoose.model('CurrentUser', currentSchema, 'Current_User');
+
+// Create the GraphicalHotspot model
+const GraphicalHotspot = mongoose.model('GraphicalHotspot', graphicalHotspotSchema, 'GraphicalHotspotsData');
+
+// Create the ImageBased
+const ImageBased = mongoose.model('ImageBased', imagebasedSchema, 'ImageBasedMultiResponseData');
+
+//Create MC
+const MultipleChoice = mongoose.model('MultipleChoice', multiplechoiceSchema, 'MultipleChoiceData');
+
+//Create MR
+const MultipleResponse = mongoose.model('MultipleResponse', multipleresponseSchema, 'MultipleResponseData');
+
+//Create ST
+const ShortText = mongoose.model('ShortText', shorttextSchema, 'ShortTextData');
 
 async function connectToDatabase() {
 

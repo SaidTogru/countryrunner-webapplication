@@ -83,13 +83,13 @@ h1, h2, h3, h4, h5, h6 {
               <div class="row">
                 <div class="progress" style="height: 20px; padding-left: 0 !important; border-radius:30px; background-color:#eefbfb;" >
                   <div id="progress-bar" class="progress-bar" role="progressbar" style="background-color: orange; padding-left: 0 !important; width: <%=data.answeredPercentage%>%;" aria-valuemin="0" aria-valuemax="100">
-                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; font-size: 20px; color:rgb(212, 137, 0); font-size:30px; left: <%=data.answeredPercentage%>%;" ></i> 
+                  <i class="fas fa-plane fa-xs" id="progress-icon" style="position: absolute; color:rgb(212, 137, 0); font-size:30px; left: <%=parseInt(data.answeredPercentage)%>%;" ></i> 
                   <%= parseInt(data.answeredPercentage)  %>%  </div> 
                 </div>
                 <div class="col-md-4 d-flex flex-column align-items-center " id="image1">
                   <div class="text-align-center">
-                  <img id="image1" src="../img/stamp_travel_novice.png" style="width:150px;">
-                  <h4>Travel Novice</h4>
+                  <img id="image1" src="../img/stamp_travel_novice.png" style="width:120px;">
+                  <h5>Travel Novice</h5>
                   <p>You encountered > 20% of questions and are starting to get to know a country!</p>
                   <p style="color: lightslategrey; font-size:14px;"> <%=parseInt(data.percentage20) %>% of learners have this stamp in their passport as well.</p>
                   <div class="btn btn-outline-success" id="novice_unlocked" style="pointer-events: none;">NEW</div> 
@@ -99,8 +99,8 @@ h1, h2, h3, h4, h5, h6 {
           
                 <div class="col-md-4 d-flex flex-column align-items-center" id="image2">
                   <div class="text-align-center">
-                  <img src="../img/stamp_adventurer.png" style="width:150px;" >
-                  <h4>Adventurer</h4>
+                  <img src="../img/stamp_adventurer.png" style="width:120px;" >
+                  <h5>Adventurer</h5>
                   <p>You explored 50% of questions and have lots of knowledge about Germany!</p>
                   <p style="color: lightslategrey; font-size:14px;"><%=parseInt(data.percentage50) %>% of learners have this stamp in their passport as well.</p>
                   <div class="btn btn-outline-success" id="adventurer_unlocked" style="pointer-events: none;">NEW</div> 
@@ -111,8 +111,8 @@ h1, h2, h3, h4, h5, h6 {
           
                 <div class="col-md-4 d-flex flex-column align-items-center" id="image3">
                   <div class="text-align-center">
-                  <img src="../img/stamp_globetrotter.png" style="width:150px;">
-                  <h4>Globetrotter</h4>
+                  <img src="../img/stamp_globetrotter.png" style="width:120px;">
+                  <h5>Globetrotter</h5>
                   <p>You are a real expert on that country. What about visiting other countries as well?</p>
                   <p style="color: lightslategrey; font-size:14px;"><%=parseInt(data.percentage100) %>% of learners have this stamp in their passport as well.</p>
                   <div  class="btn btn-outline-secondary" id="globetrotter" style="pointer-events: none;">TO BE UNLOCKED</div>
@@ -153,14 +153,17 @@ h1, h2, h3, h4, h5, h6 {
               <% const sortedUsers = data.usersList.sort((a, b) => b.score - a.score); %>
               <% const topUsers = sortedUsers.slice(0, 5); %>
               <% topUsers.forEach((user, index) => { %>
+                <% let worseUsersCount = 0; %>
                 <tr>
                   <th scope="row"><%= index + 1 %></th>
                   <td <% if (user.username === data.currentUser.username) { %>style="color:orange; font-weight:bold;"<% } %>><%= user.username %></td>
                   <td><%= user.score %></td>
+                  <% worseUsersCount = index/data.usersList; %>
                 </tr>
               <% }); %>
             </tbody>
           </table>
+          <p style="color: lightslategrey; font-size:14px;">You are better than <%= worseUsersCount %>% of users (still wrong).</p> 
         </div>
     </div>
   </div>
@@ -525,11 +528,11 @@ label: function (context) {
 
 
 var accuracy100 = '<%- JSON.stringify(data.accuracy100) %>';
-var accuracy60 = '<%- JSON.stringify(data.accuracy60) %>';
+var accuracy50 = '<%- JSON.stringify(data.accuracy50) %>';
 var accuracy0 = '<%- JSON.stringify(data.accuracy0) %>';
 var userScores = [];
 userScores.push(JSON.parse(accuracy100));
-userScores.push(JSON.parse(accuracy60));
+userScores.push(JSON.parse(accuracy50));
 userScores.push(JSON.parse(accuracy0));
 
 
