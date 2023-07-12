@@ -14,11 +14,13 @@ app.get('/dashboard', (req, res) => {
 res.render('dashboard');
 });*/
 
+
 app.get('/dashboard-data', async (req, res) => {
 
   try {
 
       const users = await User.find({});
+
 
       let count20 = 0;
       let count50 = 0;
@@ -66,6 +68,7 @@ app.get('/dashboard-data', async (req, res) => {
       const currentUser = await CurrentUser.findOne({}); // Assuming there is only one CurrentUser object
       console.log("Username:", currentUser.username);
 
+
       // Retrieve and calculate other required data
       const accuracy100 = await History.countDocuments({
           accuracy: 100,
@@ -101,13 +104,35 @@ app.get('/dashboard-data', async (req, res) => {
               }
           }
       }
-
+      const historyCountByDateAll = {};
+      const totalTasks = Object.keys(historyCountByDate).length; // Total count of tasks for all days
+      let totalDays = 0; // Counter for the number of days
+      
+      for (const entry of historyEntries) {
+        const currentDate = new Date(entry.timestamp);
+        const dateKey = currentDate.toDateString(); // Use the date string as the key
+      
+     
+          if (historyCountByDate[dateKey]) {
+            historyCountByDate[dateKey][currentUser.username] = (historyCountByDate[dateKey][currentUser.username] || 0) + 1;
+          } else {
+            historyCountByDate[dateKey] = { [currentUser.username]: 1 };
+          }
+          totalDays++; // Increment the total days counter
+        }
+      
+      
+      // Calculate the average task count per day across all users
+      const averageTasksPerDay = totalTasks / totalDays;
+      
+     
       const usersWithStreak = await User.find({
           streak: {
               $lt: currentUser.streak
           }
       }).countDocuments();
       const totalUsers = await User.countDocuments();
+
       const streakPercentage = (usersWithStreak / totalUsers * 100).toFixed(2);
 
       let streak = 0;
@@ -134,6 +159,8 @@ app.get('/dashboard-data', async (req, res) => {
               }
           }
       }
+
+
 
 
       //how much has been answered (how many documents are in history table?)
@@ -245,6 +272,25 @@ app.get('/dashboard-data', async (req, res) => {
       var skillsScores = [percentageVocabulary, percentageGeography, percentageFacts, percentageCulture, percentageHistory];
       var skillsScoresInd = [percentageVocabularyInd, percentageGeographyInd, percentageFactsInd, percentageCultureInd, percentageHistoryInd];
 
+      // Assuming you have the current user's username in the variable currentUsername
+
+// Retrieve the current user's score
+
+// Retrieve the current user document based on the username from the "users" table
+const currentUser2 = await User.findOne({ username: currentUser.username });
+
+const currentUserScore = currentUser2.score;
+console.log(currentUser2.score);
+
+// Get the count of users with a score less than the current user's score
+const countUsersWithLessScore = await User.countDocuments({ score: { $lt: currentUserScore } });
+
+// Calculate the percentage
+const worsePercentage = (countUsersWithLessScore / totalUsers * 100).toFixed(2);
+
+// Display the percentage
+console.log(`Percentage of users with a score less than the current user: ${worsePercentage}%`);
+
       const data = {
           usersList: users,
           accuracy100: accuracy100,
@@ -270,8 +316,9 @@ app.get('/dashboard-data', async (req, res) => {
           percentage20: percentage20,
           percentage50: percentage50,
           percentage100: percentage100,
-          streakPercentage: streakPercentage
-          // Include other data properties
+          streakPercentage: streakPercentage,
+          worsePercentage: worsePercentage
+              // Include other data properties
       };
 
       res.render('dashboard', {

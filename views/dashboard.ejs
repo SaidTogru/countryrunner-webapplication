@@ -131,6 +131,14 @@ h1, h2, h3, h4, h5, h6 {
           <div class="chart-container">
             <h5 class="chart-title">Progress in your first week</h5>
             <canvas id="gameChart"></canvas>
+             <button type="button" id ="goBackButton" class="btn btn-primary btn-floating">
+              <i class="fas fa-angle-left"></i>
+            </button>
+            <button type="button" id="goForthButton" style="float:right"class="btn btn-primary btn-floating">
+              <i class="fas fa-angle-right"></i>
+            </button>
+        
+
           </div>
           <h6 style="padding-top:5%">Congratulations, you managed a <%=data.streak%>-day streak!</h6>
              <p style="color: lightslategrey; font-size:14px;"><%=parseInt(data.streakPercentage)%>% of learners have achieved a <%=data.streak%>-day streak as well.</p>
@@ -153,17 +161,15 @@ h1, h2, h3, h4, h5, h6 {
               <% const sortedUsers = data.usersList.sort((a, b) => b.score - a.score); %>
               <% const topUsers = sortedUsers.slice(0, 5); %>
               <% topUsers.forEach((user, index) => { %>
-                <% let worseUsersCount = 0; %>
                 <tr>
                   <th scope="row"><%= index + 1 %></th>
                   <td <% if (user.username === data.currentUser.username) { %>style="color:orange; font-weight:bold;"<% } %>><%= user.username %></td>
                   <td><%= user.score %></td>
-                  <% worseUsersCount = index/data.usersList; %>
                 </tr>
               <% }); %>
             </tbody>
           </table>
-          <p style="color: lightslategrey; font-size:14px;">You are better than <%= worseUsersCount %>% of users (still wrong).</p> 
+          <p style="color: lightslategrey; font-size:14px;">You are better than <%=parseInt(data.worsePercentage)%>% of users.</p> 
         </div>
     </div>
   </div>
@@ -219,8 +225,7 @@ h1, h2, h3, h4, h5, h6 {
 By exploring the rich history, vocabulary, and cultural nuances of Germany, you've already taken a significant step towards expanding your understanding. Using our personalized recommendation tool helps you reinforce what you've learned and dives into more detailed aspects.
         </p>
       </div>
-      <button type="button" class="btn btn-info" onClick="loadFeedback()">See personalized recommendations</button>
-      </div>
+         </div>
       </div>
       </div>
       
@@ -232,65 +237,154 @@ function loadFeedback() {
     var iframe = window.parent.document.getElementById("dashboard");
       iframe.src = "feedback.html";
   }
+ var goBackCount=0;
 
-var historyCountByDate = JSON.parse('<%- JSON.stringify(data.historyCountByDate) %>');
-var gameLabels = [];
-var gameScores = [];
-
-for (var i = 6; i >= 0; i--) {
-  var currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() - i);
-  var month = currentDate.toLocaleString('default', { month: 'long' });
-  var day = currentDate.getDate();
-  var label = month + ", " + day;
-  gameLabels.push(label);
-
-  var dateKey = currentDate.toDateString();
-console.log(currentDate);
-console.log("hey");
-
-if (historyCountByDate.hasOwnProperty(dateKey)) {
-  var historyCount = historyCountByDate[dateKey];
-  gameScores.push(historyCount);
-}
-else {
-  gameScores.push(0);
-}
-}
-
-var maxScore = Math.max(...gameScores); // Calculate the maximum value from the dataset
-
-var yAxisMax = Math.ceil(maxScore / 5) * 5; 
-
-
-      // Create a bar chart for the game scores
+      var gameChart; // Declare the chart variable globally
+      var historyCountByDate = JSON.parse('<%- JSON.stringify(data.historyCountByDate) %>');
+      
+      // Create the initial chart
       var gameCtx = document.getElementById("gameChart").getContext("2d");
-      new Chart(gameCtx, {
-        type: "line",
-        data: {
-          labels: gameLabels,
-          datasets: [
-            {
-              label: "Answered Questions",
-              data: gameScores,
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: yAxisMax,
-              ticks: {
-          stepSize: 1, // Set the desired step size for the y-axis
-        },
+      var gameLabels = [];
+      var gameScores = [];
+      var daysToDisplay = 7;
+      var currentDate = new Date(); // Declare currentDate outside the functions
+      
+      // Add an event listener to the button
+      document.getElementById("goBackButton").addEventListener("click", goBack);
+      document.getElementById("goForthButton").addEventListener("click", goForth);
+      goForthButton.style.display="none";
+      
+      initializeChart();
+      
+      function initializeChart() {
+        for (var i = daysToDisplay - 1; i >= 0; i--) {
+          var month = currentDate.toLocaleString("default", { month: "long" });
+          var day = currentDate.getDate();
+          var label = month + ", " + day;
+          gameLabels.push(label);
+      
+          var dateKey = currentDate.toDateString();
+      
+          if (historyCountByDate.hasOwnProperty(dateKey)) {
+            var historyCount = historyCountByDate[dateKey];
+            gameScores.push(historyCount);
+          } else {
+            gameScores.push(0);
+          }
+      
+          currentDate.setDate(currentDate.getDate() - 1);
+        }
+      
+        gameLabels.reverse();
+        gameScores.reverse();
+      
+        var maxScore = Math.max(...gameScores);
+        var yAxisMax = Math.ceil(maxScore / 5) * 5;
+      
+        gameChart = new Chart(gameCtx, {
+          type: "line",
+          data: {
+            labels: gameLabels,
+            datasets: [
+              {
+                label: "Answered Questions",
+                data: gameScores,
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: yAxisMax,
+                ticks: {
+                  stepSize: 1,
+                },
+              },
             },
           },
-        },
-      });
+        });
+      }
+     
+function goBack() {
+  goForthButton.style.display="block";
+  currentDate.setDate(currentDate.getDate());
+  console.log(currentDate);
+  console.log(gameScores);
+  goBackCount++; // Increment the goBackCount
+  console.log(goBackCount);
+  document.getElementById("goForthButton").style.display = "block";
+
+  gameLabels = [];
+  gameScores = [];
+
+  for (var i = daysToDisplay - 1; i >= 0; i--) {
+    var month = currentDate.toLocaleString("default", { month: "long" });
+    var day = currentDate.getDate();
+    var label = month + ", " + day;
+    gameLabels.unshift(label); // Add the label to the beginning of the array
+
+    var dateKey = currentDate.toDateString();
+
+    if (historyCountByDate.hasOwnProperty(dateKey)) {
+      var historyCount = historyCountByDate[dateKey];
+      gameScores.unshift(historyCount); // Add the score to the beginning of the array
+    } else {
+      gameScores.unshift(0); // Add 0 if the score is not available
+    }
+
+    currentDate.setDate(currentDate.getDate() - 1); // Subtract 1 day
+  }
+
+  gameChart.data.labels = gameLabels;
+  gameChart.data.datasets[0].data = gameScores;
+  gameChart.update();
+}
+
+function goForth() {
+  console.log(goBackCount);
+  goBackCount--; // Decrement the goBackCount
+
+  if (goBackCount === 0) {
+    document.getElementById("goForthButton").style.display = "none";
+  }
+
+  var originalStartDate = new Date(currentDate.getTime()); // Store the original start date
+
+  gameLabels = [];
+  gameScores = [];
+
+  currentDate.setDate(currentDate.getDate() + 8); // Increment the currentDate by 7 days
+
+  for (var i = 0; i < daysToDisplay; i++) {
+    var month = currentDate.toLocaleString("default", { month: "long" });
+    var day = currentDate.getDate();
+    var label = month + ", " + day;
+    gameLabels.push(label); // Add the label to the end of the array
+
+    var dateKey = currentDate.toDateString();
+
+    if (historyCountByDate.hasOwnProperty(dateKey)) {
+      var historyCount = historyCountByDate[dateKey];
+      gameScores.push(historyCount); // Add the score to the end of the array
+    } else {
+      gameScores.push(0); // Add 0 if the score is not available
+    }
+
+    currentDate.setDate(currentDate.getDate() + 1); // Increment the currentDate by 1 day
+  }
+
+  currentDate = new Date(originalStartDate.getTime() + 7 * 24 * 60 * 60 * 1000); // Update the currentDate to match the new week
+
+  gameChart.data.labels = gameLabels;
+  gameChart.data.datasets[0].data = gameScores;
+  gameChart.update();
+}
+
+
 
       // Generate placeholder data for the skills chart
       var skillsLabels = [
@@ -511,7 +605,6 @@ label: function (context) {
 
   // Call the function whenever the progress bar width changes
   progressBar.addEventListener("transitionend", updateImageOpacity);
-
 
    // Generate placeholder data for the skills chart
    var skillsLabels = [
