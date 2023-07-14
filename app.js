@@ -2,6 +2,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const express = require("express");
 const ejs = require("ejs");
 const path = require("path");
+const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 
 const app = express(); // Create an Express app
@@ -385,6 +386,20 @@ app.get("/dashboard-data", async (req, res) => {
   }
 });
 
+app.get("/feedback", async (req, res) => {
+  try {
+    const data = {
+      API_KEY: process.env.API_KEY,
+    };
+    res.render("feedback", {
+      data,
+    });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 // Set the static directory for serving HTML files
 app.use(express.static(__dirname + "/public"));
 
@@ -394,8 +409,8 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 //kill nodejs instances with: taskkill /f /im node.exe
-const uri =
-  "mongodb+srv://projectcountryrunner:projectcountryrunner123@cluster0.jr9krae.mongodb.net/countryrunner?retryWrites=true&w=majority";
+const uri = `mongodb+srv://projectcountryrunner:${process.env.DB_PASSWORD}@cluster0.jr9krae.mongodb.net/countryrunner?retryWrites=true&w=majority`;
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
