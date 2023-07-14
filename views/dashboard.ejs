@@ -241,13 +241,11 @@ function loadFeedback() {
 
       var gameChart; // Declare the chart variable globally
       var historyCountByDate = JSON.parse('<%- JSON.stringify(data.historyCountByDate) %>');
-      var historyCountByDateAvg = JSON.parse('<%- JSON.stringify(data.historyCountByDateAvg) %>');
-     
+      
       // Create the initial chart
       var gameCtx = document.getElementById("gameChart").getContext("2d");
       var gameLabels = [];
       var gameScores = [];
-      var gameScores2 = [];
       var daysToDisplay = 7;
       var currentDate = new Date(); // Declare currentDate outside the functions
       
@@ -273,20 +271,12 @@ function loadFeedback() {
           } else {
             gameScores.push(0);
           }
-
-          if (historyCountByDateAvg.hasOwnProperty(dateKey)) {
-  var historyCountAvg = historyCountByDateAvg[dateKey];
-  gameScores2.push(historyCountAvg);
-} else {
-  gameScores2.push(0);
-}
-
+      
           currentDate.setDate(currentDate.getDate() - 1);
         }
       
         gameLabels.reverse();
         gameScores.reverse();
-        gameScores2.reverse();
       
         var maxScore = Math.max(...gameScores);
         var yAxisMax = Math.ceil(maxScore / 5) * 5;
@@ -303,14 +293,6 @@ function loadFeedback() {
                 borderColor: "rgba(75, 192, 192, 1)",
                 borderWidth: 1,
               },
-              {
-                label: "Average Answered Questions of all Users",
-                data: gameScores2,
-                backgroundColor: "rgba(255, 165, 0, 0.2)",
-                borderColor: "rgba(255, 165, 0, 0.5)",
-                borderWidth: 1,
-              }
-          
             ],
           },
           options: {
@@ -338,7 +320,6 @@ function goBack() {
 
   gameLabels = [];
   gameScores = [];
-  gameScores2 = [];
 
   for (var i = daysToDisplay - 1; i >= 0; i--) {
     var month = currentDate.toLocaleString("default", { month: "long" });
@@ -352,23 +333,14 @@ function goBack() {
       var historyCount = historyCountByDate[dateKey];
       gameScores.unshift(historyCount); // Add the score to the beginning of the array
     } else {
-      gameScores.unshift(0); // Add 0 if the score is not available    
-    }
-
-    if (historyCountByDateAvg.hasOwnProperty(dateKey)) {
-      var historyCountAvg = historyCountByDate[dateKey]; 
-      gameScores2.unshift(historyCountAvg); // Add the score to the beginning of the array
-    } else {
-      gameScores2.unshift(0); // Add 0 if the score is not available    
+      gameScores.unshift(0); // Add 0 if the score is not available
     }
 
     currentDate.setDate(currentDate.getDate() - 1); // Subtract 1 day
   }
 
-
   gameChart.data.labels = gameLabels;
   gameChart.data.datasets[0].data = gameScores;
-  gameChart.data.datasets[1].data = gameScores2;
   gameChart.update();
 }
 
@@ -384,7 +356,6 @@ function goForth() {
 
   gameLabels = [];
   gameScores = [];
-  gameScores2 = [];
 
   currentDate.setDate(currentDate.getDate() + 8); // Increment the currentDate by 7 days
 
@@ -399,16 +370,8 @@ function goForth() {
     if (historyCountByDate.hasOwnProperty(dateKey)) {
       var historyCount = historyCountByDate[dateKey];
       gameScores.push(historyCount); // Add the score to the end of the array
-      
     } else {
       gameScores.push(0); // Add 0 if the score is not available
-    }
-
-    if (historyCountByDateAvg.hasOwnProperty(dateKey)) {
-      var historyCountAvg = historyCountByDateAvg[dateKey];
-      gameScores2.push(historyCountAvg); // Add the score to the end of the array
-    } else {
-      gameScores2.push(0); // Add 0 if the score is not available
     }
 
     currentDate.setDate(currentDate.getDate() + 1); // Increment the currentDate by 1 day
@@ -418,9 +381,9 @@ function goForth() {
 
   gameChart.data.labels = gameLabels;
   gameChart.data.datasets[0].data = gameScores;
-  gameChart.data.datasets[1].data = gameScores2;
   gameChart.update();
 }
+
 
 
       // Generate placeholder data for the skills chart
