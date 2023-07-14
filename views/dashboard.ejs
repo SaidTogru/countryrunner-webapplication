@@ -71,6 +71,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Passion One', cursive;
 }
     </style>
+    <% if (data.history=== true) { %>
 <div class="col-md-8">
         <div class="row">
           <h1 style="color:white;">Learning Dashboard of  <%= data.currentUser.username %></h1></h1>
@@ -230,14 +231,21 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
       </div>
       
     </div>
+    <% } else { %>
+      <div>
+        <h1 style="color: white; font-weight: bold; font-size: 24px; margin-bottom: 20px; text-align: center;">There is no history for the current user yet.</h1>
+        <p style="color: white; text-align: center;">To see your dashboard, you must first play the game.</p>
+        <br>
+        <div id="outer" style="width: 100%; overflow-x: hidden; text-align: center;">
+          <div id="inner" style="display: inline-block;">
+            <iframe src="https://giphy.com/embed/l3q2QRKIXtoySDo9a" style="display: block; margin: 0 auto;"></iframe>
+          </div>
+        </div>
+      </div>        
+      <% } %>
     <script>
-
-function loadFeedback() {
-    // Open main.html in a new window or tab with the desired section
-    var iframe = window.parent.document.getElementById("dashboard");
-      iframe.src = "feedback.html";
-  }
- var goBackCount=0;
+      if ('<%- data.history %>' == 'true') {
+      var goBackCount=0;
 
       var gameChart; // Declare the chart variable globally
       var historyCountByDate = JSON.parse('<%- JSON.stringify(data.historyCountByDate) %>');
@@ -275,11 +283,11 @@ function loadFeedback() {
           }
 
           if (historyCountByDateAvg.hasOwnProperty(dateKey)) {
-  var historyCountAvg = historyCountByDateAvg[dateKey];
-  gameScores2.push(historyCountAvg);
-} else {
-  gameScores2.push(0);
-}
+            var historyCountAvg = historyCountByDateAvg[dateKey];
+            gameScores2.push(historyCountAvg);
+          } else {
+            gameScores2.push(0);
+          }
 
           currentDate.setDate(currentDate.getDate() - 1);
         }
@@ -707,6 +715,7 @@ userScores.push(JSON.parse(accuracy0));
   progwidth = answeredPercentage.toFixed(0) + "%";
   progressBar.style.width = progwidth;
   progressIcon.style.marginLeft = progwidth;
+}
 }
     </script>
   </body>
