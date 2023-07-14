@@ -104,27 +104,35 @@ app.get('/dashboard-data', async (req, res) => {
               }
           }
       }
-      const historyCountByDateAll = {};
-      const totalTasks = Object.keys(historyCountByDate).length; // Total count of tasks for all days
-      let totalDays = 0; // Counter for the number of days
-      
+   
+
+      const historyCountByDateAvg = {};
+
       for (const entry of historyEntries) {
         const currentDate = new Date(entry.timestamp);
         const dateKey = currentDate.toDateString(); // Use the date string as the key
       
-     
-          if (historyCountByDate[dateKey]) {
-            historyCountByDate[dateKey][currentUser.username] = (historyCountByDate[dateKey][currentUser.username] || 0) + 1;
-          } else {
-            historyCountByDate[dateKey] = { [currentUser.username]: 1 };
-          }
-          totalDays++; // Increment the total days counter
+        if (historyCountByDateAvg[dateKey]) {
+          // Increment the count for the date
+          historyCountByDateAvg[dateKey].count += 1;
+          historyCountByDateAvg[dateKey].userCount.add(entry.username);
+        } else {
+          // Initialize the count for the date
+          historyCountByDateAvg[dateKey] = {
+            count: 1,
+            userCount: new Set([entry.username]),
+          };
         }
-      
-      
-      // Calculate the average task count per day across all users
-      const averageTasksPerDay = totalTasks / totalDays;
-      
+      }
+
+for (const dateKey in historyCountByDateAvg) {
+    const { count, userCount } = historyCountByDateAvg[dateKey];
+    const average = count / userCount.size;
+    historyCountByDateAvg[dateKey] = average;
+  }
+  
+         
+
      
       const usersWithStreak = await User.find({
           streak: {
@@ -132,6 +140,7 @@ app.get('/dashboard-data', async (req, res) => {
           }
       }).countDocuments();
       const totalUsers = await User.countDocuments();
+      const totalUsersWithoutCurrent = await User.countDocuments({ username: { $ne: currentUser.username } });
 
       const streakPercentage = (usersWithStreak / totalUsers * 100).toFixed(2);
 
@@ -286,7 +295,7 @@ console.log(currentUser2.score);
 const countUsersWithLessScore = await User.countDocuments({ score: { $lt: currentUserScore } });
 
 // Calculate the percentage
-const worsePercentage = (countUsersWithLessScore / totalUsers * 100).toFixed(2);
+const worsePercentage = ((countUsersWithLessScore / totalUsersWithoutCurrent)* 100).toFixed(2);
 
 // Display the percentage
 console.log(`Percentage of users with a score less than the current user: ${worsePercentage}%`);
@@ -317,7 +326,8 @@ console.log(`Percentage of users with a score less than the current user: ${wors
           percentage50: percentage50,
           percentage100: percentage100,
           streakPercentage: streakPercentage,
-          worsePercentage: worsePercentage
+          worsePercentage: worsePercentage,
+          historyCountByDateAvg: historyCountByDateAvg
               // Include other data properties
       };
 
@@ -340,7 +350,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 //kill nodejs instances with: taskkill /f /im node.exe
-const uri = "mongodb+srv://projectcountryrunner:PW@cluster0.jr9krae.mongodb.net/countryrunner?retryWrites=true&w=majority";
+const uri = "mongodb+srv://projectcountryrunner:projectcountryrunner123@cluster0.jr9krae.mongodb.net/countryrunner?retryWrites=true&w=majority";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
