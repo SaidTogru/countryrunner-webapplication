@@ -36,6 +36,20 @@
         if (username) {
           localStorage.setItem("username", username); // Stores username in browser's local storage
           window.location.href = "main.html"; // Redirects user to index.html
+
+          // Then, make a fetch request to your server
+          fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username: username }), // send the username data to server
+          })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => {
+              console.error("Error:", error);
+            });
         } else {
           alert("Please enter a username.");
         }
