@@ -42,28 +42,40 @@
         text-align: center;
         font-family: "CustomFont", sans-serif;
         font-size: 16px;
-        padding-top: 50px;
       }
 
-      .card > span {
-        display: block;
-        margin: auto;
-        max-width: 80px;
-      }
-
-      .card.red {
-        background-color: #a30d0dc4;
-        color: white;
-      }
-
-      .card.green {
-        background-color: #23a023c0;
-        color: white;
+      .card.white {
+        background-color: #d6d8d7c4;
+        color: rgb(3, 3, 3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .card.blue {
-        background-color: #2929b9cc;
+        background-color: #322fc5c0;
         color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card.yellow {
+        background-color: #dbbc2fcc;
+        color: rgb(24, 24, 24);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid black;
+      }
+
+      .card.black {
+        background-color: #be4747cc;
+        color: rgb(32, 32, 32);
+        height: 35vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .container:hover .card {
@@ -97,87 +109,491 @@
         font-size: calc(1.375rem + 1.5vw);
         margin-left: 2%;
       }
+
+      .text {
+        color: black;
+        font-weight: bolder;
+      }
+
+      @keyframes letter {
+        0% {
+          font-size: 30px;
+        }
+
+        50% {
+          font-size: 40px;
+        }
+
+        100% {
+          font-size: 30px;
+        }
+      }
+
+      .letter {
+        animation: letter 1s infinite;
+      }
+
+      .letter1 {
+        animation-delay: 0s;
+      }
+
+      .letter2 {
+        animation-delay: -0.9s;
+      }
+
+      .letter3 {
+        animation-delay: -0.8s;
+      }
+
+      .letter4 {
+        animation-delay: -0.7s;
+      }
+
+      .letter5 {
+        animation-delay: -0.6s;
+      }
+
+      .letter6 {
+        animation-delay: -0.5s;
+      }
+
+      .letter7 {
+        animation-delay: -0.4s;
+      }
+
+      .letter8 {
+        animation-delay: -0.3s;
+      }
+
+      .letter9 {
+        animation-delay: -0.2s;
+      }
+
+      .letter10 {
+        animation-delay: -0.1s;
+      }
+
+      .dropdown {
+        font-size: 16px;
+        width: 100%;
+        height: 40px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        outline: none;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: #ffffff;
+        color: #000000;
+      }
+
+      h3 {
+        text-align: center;
+      }
     </style>
   </head>
   <body>
-    <div class="col-md-8">
-      <div class="row">
-        <h1 style="color: white">AI Feedback</h1>
+    <% if (data.history === true) { %>
+    <div>
+      <div class="col-md-8">
+        <div class="row">
+          <h1 style="color: white">AI Feedback</h1>
+        </div>
+      </div>
+
+      <div class="container">
+        <select
+          id="feedback-option"
+          class="dropdown"
+          style="font-family: CustomFont, sans-serif; font-size: 16px"
+        >
+          <option value="basic">Basic Feedback</option>
+          <option value="complex">Complex Feedback</option>
+          <option value="category">Category-based Feedback</option>
+          <option value="personalized">Personalized Plan</option>
+        </select>
+      </div>
+
+      <div id="basic" style="display: block">
+        <div class="container">
+          <div class="card white">
+            <h2>
+              <span id="1">What were my mistakes?</span>
+            </h2>
+          </div>
+          <div class="card white">
+            <h2><span id="2">Where did I do well?</span></h2>
+          </div>
+        </div>
+      </div>
+      <div id="complex" style="display: none">
+        <div class="container">
+          <div class="card black">
+            <h2>
+              <span id="3">
+                Based on my performance, what specific goals can I set for the
+                next game? This could be about improving my overall score or
+                focusing on a specific category where you had more wrong
+                answers.</span
+              >
+            </h2>
+          </div>
+          <div class="card black">
+            <h2>
+              <span id="4"
+                >Considering my overall performance across all categories, can
+                you provide elaborated feedback that addresses my task
+                understanding, self-regulation, and overall learning process to
+                improve in all areas?</span
+              >
+            </h2>
+          </div>
+          <div class="card black">
+            <h2>
+              <span id="5"
+                >Looking at the timestamps of my activities, what insights can
+                you share about my learning habits, and how might these affect
+                my performance?</span
+              >
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div id="category" style="display: none">
+        <div class="container">
+          <div class="card blue">
+            <h2><span id="6">Vocabulary</span></h2>
+          </div>
+          <div class="card blue">
+            <h2><span id="7">Geography</span></h2>
+          </div>
+          <div class="card blue">
+            <h2><span id="8">History</span></h2>
+          </div>
+          <div class="card blue">
+            <h2><span id="9">Facts</span></h2>
+          </div>
+          <div class="card blue">
+            <h2><span id="10">Culture</span></h2>
+          </div>
+        </div>
+      </div>
+      <div id="personalized" style="display: none">
+        <h3>What type of learner are you?</h3>
+        <div class="container">
+          <div class="label-container"></div>
+          <select id="personalized-option" class="dropdown">
+            <option value="Visual">Visual Learning</option>
+            <option value="Auditory">Auditory Learning</option>
+            <option value="Verbal">
+              Verbal Learning (Linguistic Learning):
+            </option>
+            <option value="Kinesthetic">Kinesthetic Learning</option>
+            <option value="Social (Interpersonal)">Social (Interpersonal) Learning</option>
+            <option value="Individual (Intrapersonal)">Individual (Intrapersonal) Learning</option>
+            <option value="Logical (Mathematical)">Logical (Mathematical) Learning</option>
+          </select>
+        </div>
+        <div class="container">
+          <div class="card yellow">
+            <h2><span id="11">7-days Plan</span></h2>
+          </div>
+        </div>
+      </div>
+
+      <div id="chat-output"></div>
+    </div>
+    <% } else { %>
+    <div>
+      <h1
+        style="
+          color: white;
+          font-weight: bold;
+          font-size: 24px;
+          margin-bottom: 20px;
+          text-align: center;
+        "
+      >
+        There is no history for the current user yet.
+      </h1>
+      <p style="color: white; text-align: center">
+        To get AI Feedback, you must first play the game.
+      </p>
+      <br />
+      <div
+        id="outer"
+        style="width: 100%; overflow-x: hidden; text-align: center"
+      >
+        <div id="inner" style="display: inline-block">
+          <iframe
+            src="https://giphy.com/embed/g3ZlHx1iqhCOCcY3p2"
+            style="
+              display: block;
+              margin: 0 auto;
+              border: 0;
+              width: 300px;
+              height: 300px;
+              border-radius: 10px;
+            "
+          ></iframe>
+        </div>
       </div>
     </div>
-
-    <div class="container">
-      <div class="card red">
-        <h2><span>What were your mistakes?</span></h2>
-      </div>
-      <div class="card green">
-        <h2><span>What did you do well?</span></h2>
-      </div>
-      <div class="card blue">
-        <h2><span>How can you improve?</span></h2>
-      </div>
-    </div>
-
-    <div id="chat-output"></div>
-    <!-- Output field -->
+    <% } %>
 
     <script>
-      // JavaScript code
+        var whole_history = '<%- JSON.stringify(data.history_json) %>';
+        var percentageVocabularyInd = '<%- JSON.stringify(data.percentageVocabularyInd) %>';
+        var percentageGeographyInd = '<%- JSON.stringify(data.percentageGeographyInd) %>';
+        var percentageFactsInd = '<%- JSON.stringify(data.percentageFactsInd) %>';
+        var percentageCultureInd = '<%- JSON.stringify(data.percentageCultureInd) %>';
+        var percentageHistoryInd = '<%- JSON.stringify(data.percentageHistoryInd) %>';
+        var History_Correct = '<%- JSON.stringify(data.History_Correct) %>';
+        var History_Wrong = '<%- JSON.stringify(data.History_Wrong) %>';
+        var History_History = '<%- JSON.stringify(data.History_History) %>';
+        var History_Vocabulary = '<%- JSON.stringify(data.History_Vocabulary) %>';
+        var History_Facts = '<%- JSON.stringify(data.History_Facts) %>';
+        var History_Culture = '<%- JSON.stringify(data.History_Culture) %>';
+        var History_Geography = '<%- JSON.stringify(data.History_Geography) %>';
+
+      document
+        .getElementById("feedback-option")
+        .addEventListener("change", function () {
+          // Hide all divs
+          ["basic", "complex", "category", "personalized"].forEach(function (
+            id
+          ) {
+            document.getElementById(id).style.display = "none";
+          });
+
+            chatOutput = document.getElementById("chat-output");
+            chatOutput.innerHTML = "";
+          // Show selected div
+          document.getElementById(this.value).style.display = "block";
+        });
+      document
+        .getElementById("feedback-option")
+        .addEventListener("change", function () {
+          const selectedOption = this.value;
+
+          // Hide all divs
+          ["basic", "complex", "category", "personalized"].forEach(function (
+            id
+          ) {
+            document.getElementById(id).style.display = "none";
+          });
+
+          // Show selected div
+          document.getElementById(selectedOption).style.display = "block";
+
+          // Show/hide the new dropdown list based on the selected option
+          const personalizedDropdown = document.getElementById(
+            "personalized-option"
+          );
+          if (selectedOption === "personalized") {
+            personalizedDropdown.style.display = "block";
+          } else {
+            personalizedDropdown.style.display = "none";
+          }
+        });
 
       // Select all the cards
       const cards = document.querySelectorAll(".card");
-
+        let basic_prefix = `I have been participating in a quiz game featuring various question types like multiple choice and short answer, covering categories like vocabulary, history, geography, facts, and culture. The game tracks my performance history, recording correct and incorrect answers, along with their respective categories and question types.
+            I would like personalized feedback on every question I answered, why correct or why wrong. Give me feedback on the following question based on the data I provide: 
+            `
+        let complex_prefix = `I have been participating in a quiz game featuring various question types like multiple choice and short answer, covering categories like vocabulary, history, geography, facts, and culture. The game tracks my performance history, recording correct and incorrect answers, along with their respective categories and question types.
+            I would like personalized feedback based on my game performance, using established literature to ensure its effectiveness. Specifically, apply Hattie & Timperley's (2007) feedback model to my case. This model suggests that feedback should reduce the discrepancy between current performance and desired goals by addressing three questions: Where am I going (the goals)? How am I going (current status)? Where to next (improvements)?
+            Feedback should operate at four levels: task, process, self-regulation, and self. The goal is to motivate learning and enhance performance. Also, consider Narciss's (2006, 2020) perspectives on feedback strategies and categories, and theories around timing, direct vs. indirect, and the quality of feedback.
+            Using these guidelines, provide me with relevant, informative feedback that encourages self-assessment and a dialogic learning process.
+            Give me feedback on the following question based on the data I provide: 
+            `;
+        let category_prefix = `I have been participating in a quiz game featuring various question types like multiple choice and short answer, covering categories like vocabulary, history, geography, facts, and culture. The game tracks my performance history, recording correct and incorrect answers, along with their respective categories and question types. 
+            `
+        let plan_prefix = `I am currently engaged in a multi-faceted quiz game which includes a variety of question formats such as multiple choice and short answer. The game spans a broad range of topics, including vocabulary, history, geography, general knowledge, and cultural studies. Importantly, it keeps a record of my performance history, including correct and incorrect responses, as well as the specific categories and question types. 
+        In your analysis, please take into consideration the following literature in the fields of e-assessment, learning analytics, and technology-enhanced learning: "Narciss (2006, 2020)" and "Hattie & Timperley (2007)", among others.
+        `;
+      let suffix = `Instructions:
+        Please structure your response using appropriate HTML formatting for better readability.
+        Utilize tags such as headings (h1, h2, etc.), lists (ul, ol, li), pre or code tags for code blocks, and other relevant HTML features as necessary.
+        Your answer should be comprehensive and well-structured.`;
+      let infix = ` Here is the data I can provide you with: 
+      `
+      var loadingAnimation = `<div
+            id="outer"
+            style="width: 100%; overflow-x: hidden; text-align: center"
+          >
+            <div id="inner" style="display: inline-block">
+              <br />
+              <div class="loader">
+                <p class="text">
+                  <span class="letter letter1">L</span>
+                  <span class="letter letter2">o</span>
+                  <span class="letter letter3">a</span>
+                  <span class="letter letter4">d</span>
+                  <span class="letter letter5">i</span>
+                  <span class="letter letter6">n</span>
+                  <span class="letter letter7">g</span>
+                  <span class="letter letter8">.</span>
+                  <span class="letter letter9">.</span>
+                  <span class="letter letter10">.</span>
+                </p>
+              </div>
+              <br />
+              <iframe
+                src="https://giphy.com/embed/3o7aCTfyhYawdOXcFW"
+                style="
+                  display: block;
+                  margin: 0 auto;
+                  border: 0;
+                  width: 300px;
+                  height: 300px;
+                  border-radius: 10px;
+                "
+              ></iframe>
+            </div>
+          </div>`;
+      let chatOutput = document.getElementById("chat-output");
       // Loop through the cards and add click event listeners
       cards.forEach((card) => {
         card.addEventListener("click", async (event) => {
+          // Get the chat output element
+          chatOutput = document.getElementById("chat-output");
+          // Make the outer div visible
+          chatOutput.innerHTML = loadingAnimation;
           // Get the text from the span within the card
-          //const prompt = "Bist du ChatGPT? Stell dich kurz vor.";
-          var cardType = card.querySelector("span").textContent;
 
-          if (cardType == "What were your mistakes?") {
-            var prompt = `I played a Quiz Game about Germany and got some answers wrong. These were my mistakes:
-            "multiple_choice" question "Who is the current Chancellor of Germany?" in category "politics"
-            Possible answer: "Angela Merkel", "Olaf Scholz", "Frank-Walter Steinmeier"
-            correct_answer: "Olaf Scholz"
-            My answer: "Angela Merkel"
-            "true_or_false" question "Germany has a unicameral legislative system." in category "government"
-            correct_answer: "False"
-            My answer: "True"
-            "fill_in_the_blank" question "The highest mountain in Germany is the _______." in category "geography"
-            correct_answer: "Zugspitze"
-            My answer: "Mount Everest"
-            "multiple_choice" question "Which river flows through Berlin?" in category "geography"
-            Possible answer: "Rhine", "Elbe", "Spree"
-            correct_answer: "Spree"
-            My answer: "Elbe"
-            Give me feedback about it and put each question into a single card in a 3-grid layout using inline-css. Put the question into an <h2> tag and the explanation why it was wrong and correct answer into a <p> tag. Please don't display any other comments coming from you."`;
+          var cardType = card.querySelector("span").id;
+          if (cardType == "1") {
+            var prompt = basic_prefix + `What were my mistakes?`+ infix + "History of wrong answers: " + History_Wrong + "\n"+ suffix;
           }
-          if (cardType == "What did you do well?") {
-            var prompt = `I played a Quiz Game about Germany and answered some questions correctly. These were my correct answers:
-            "multiple_choice" question "Who is the current Chancellor of Germany?" in category "politics"
-            Possible answer: "Angela Merkel", "Olaf Scholz", "Frank-Walter Steinmeier"
-            correct_answer: "Olaf Scholz"
-            My answer: "Olaf Scholz"
-            "true_or_false" question "Germany has a unicameral legislative system." in category "government"
-            correct_answer: "False"
-            My answer: "False"
-            "fill_in_the_blank" question "The highest mountain in Germany is the _______." in category "geography"
-            correct_answer: "Zugspitze"
-            My answer: "Zugspitze"
-            "multiple_choice" question "Which river flows through Berlin?" in category "geography"
-            Possible answer: "Rhine", "Elbe", "Spree"
-            correct_answer: "Spree"
-            My answer: "Spree"
-            Can you give me feedback about it and some more information? Please put the question into an <h2> tag and the rest of the answer into a <p> tag."`;
+          if (cardType == "2") {
+            var prompt = basic_prefix + `Where did I do well?`+ infix + "History of correct answers: " + History_Correct + "\n"+ suffix;
           }
-          //Explain the right answer
-          if (cardType == "How can you improve?") {
-            var prompt = `I played a quiz game about Germany and the German language. Some answers were right, others were wrong. 
-            Can you give me a plan on how to improve? Make a learning plan for me!`;
+          if (cardType == "3") {
+            var base = `Based on my performance, what specific goals can I set for the next game? 
+            This could be about improving my overall score or focusing on a specific category where you had more wrong answers.`
+            var prompt = complex_prefix + base+ infix 
+            + "History of answered questions: " + whole_history +
+            + "\n"
+            + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
+            + "\n" 
+            + "Percentage in the Vocabolury geography: " + percentageGeographyInd
+            + "\n"
+            + "Percentage in the Vocabolury facts: " + percentageFactsInd
+            + "\n"
+            + "Percentage in the Vocabolury culture: " + percentageCultureInd
+            + "\n" 
+            + "Percentage in the Vocabolury history: " + percentageHistoryInd 
+            + "\n"
+            + suffix;
+          }
+          if (cardType == "4") {
+            var base = `Considering my overall performance across all categories, can you provide elaborated feedback 
+            that addresses my task understanding, self-regulation, and overall learning process to improve in all areas?`
+            var prompt = complex_prefix + base+ infix 
+            + "History of answered questions: " + whole_history +
+            + "\n"
+            + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
+            + "\n" 
+            + "Percentage in the Vocabolury geography: " + percentageGeographyInd
+            + "\n"
+            + "Percentage in the Vocabolury facts: " + percentageFactsInd
+            + "\n"
+            + "Percentage in the Vocabolury culture: " + percentageCultureInd
+            + "\n" 
+            + "Percentage in the Vocabolury history: " + percentageHistoryInd 
+            + "\n"
+            + suffix;
+          }
+          if (cardType == "5") {
+            var base = `Looking at the timestamps of my activities, 
+            what insights can you share about my learning habits, and how might these affect my performance?`
+            var prompt = complex_prefix + base+ infix 
+            + "History of answered questions: " + whole_history +
+            + "\n"
+            + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
+            + "\n" 
+            + "Percentage in the Vocabolury geography: " + percentageGeographyInd
+            + "\n"
+            + "Percentage in the Vocabolury facts: " + percentageFactsInd
+            + "\n"
+            + "Percentage in the Vocabolury culture: " + percentageCultureInd
+            + "\n" 
+            + "Percentage in the Vocabolury history: " + percentageHistoryInd 
+            + "\n"
+            + suffix;
+          }
+          if (cardType == "6") {
+            var base = `Based on my accuracy records, how well am I performing in the vocabulary category, and how can I improve my percentage in vocabulary?`
+            var prompt = category_prefix + base+ infix 
+            + "History of answered questions in the vocabulary category: " + History_Vocabulary +
+            + "\n"
+            + "Percentage in the vocabulary category: " + percentageVocabularyInd 
+            + "\n" 
+            + suffix;
+          }
+          if (cardType == "7") {
+            var base = `Considering my geography-related question accuracy, how can I enhance my percentage in geography, and what learning strategies should I employ?`
+            var prompt = category_prefix + base+ infix 
+            + "History of answered questions in the geography category: " + History_Geography +
+            + "\n"
+            + "Percentage in the geography category: " + percentageGeographyInd 
+            + "\n" 
+            + suffix;
+          }
+          if (cardType == "8") {
+            var base = `Reflecting on my history questions accuracy and my percentage in history, what areas should I focus on to better understand or perform in this category?`
+            var prompt = category_prefix + base+ infix 
+            + "History of answered questions in the history category: " + History_History +
+            + "\n"
+            + "Percentage in the history category: " + percentageHistoryInd 
+            + "\n" 
+            + suffix;
+          }
+          if (cardType == "9") {
+            var base = `Reviewing my performance in the facts category, particularly focusing on my percentage in facts, what are my strengths and areas for improvement?`
+            var prompt = category_prefix + base+ infix 
+            + "History of answered questions in the Facts category: " + History_Facts +
+            + "\n"
+            + "Percentage in the facts category: " + percentageFactsInd 
+            + "\n" 
+            + suffix;
+          }
+          if (cardType == "10") {
+            var base = `Given my accuracy in culture-related questions and my percentage in culture, how should I adjust my learning strategies to improve in this category?`
+            var prompt = category_prefix + base+ infix 
+            + "History of answered questions in the culture category: " + History_Culture +
+            + "\n"
+            + "Percentage in the culture category: " + percentageCultureInd 
+            + "\n" 
+            + suffix;
+          }
+          if (cardType == "11") {
+            let selectElement = document.getElementById('personalized-option');
+            let learn_type = selectElement.value;
+            var base = `Given that I'm a ${learn_type} learner and considering my overall performance 
+            and patterns identified in my learning history, could you provide a detailed 7-day ${learn_type}-oriented 
+            learning plan to enhance my understanding across all categories, particularly 
+            focusing on areas where my accuracy has been lower?`;
+            var prompt = plan_prefix + base+ infix 
+            + "History of answered questions: " + whole_history +
+            + "\n"
+            + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
+            + "\n" 
+            + "Percentage in the Vocabolury geography: " + percentageGeographyInd
+            + "\n"
+            + "Percentage in the Vocabolury facts: " + percentageFactsInd
+            + "\n"
+            + "Percentage in the Vocabolury culture: " + percentageCultureInd
+            + "\n" 
+            + "Percentage in the Vocabolury history: " + percentageHistoryInd 
+            + "\n"
+            + suffix;
           }
           // Make the API request to ChatGPT
           var API_KEY = "<%- data.API_KEY %>";
-          console.log(API_KEY);
           const response = await fetch(
             "https://api.openai.com/v1/chat/completions",
             {
@@ -200,13 +616,12 @@
           );
 
           // Parse the response
-          const data = await response.json();
+          const dataGPT = await response.json();
 
           // Get the chat output element
-          const chatOutput = document.getElementById("chat-output");
-
+          chatOutput = document.getElementById("chat-output");
           // Display the content in the output field
-          chatOutput.innerHTML = data.choices[0].message.content;
+          chatOutput.innerHTML = dataGPT.choices[0].message.content;
         });
       });
     </script>

@@ -233,15 +233,40 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
     </div>
     <% } else { %>
       <div>
-        <h1 style="color: white; font-weight: bold; font-size: 24px; margin-bottom: 20px; text-align: center;">There is no history for the current user yet.</h1>
-        <p style="color: white; text-align: center;">To see your dashboard, you must first play the game.</p>
-        <br>
-        <div id="outer" style="width: 100%; overflow-x: hidden; text-align: center;">
-          <div id="inner" style="display: inline-block;">
-            <iframe src="https://giphy.com/embed/l3q2QRKIXtoySDo9a" style="display: block; margin: 0 auto;"></iframe>
+        <h1
+          style="
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+          "
+        >
+          There is no history for the current user yet.
+        </h1>
+        <p style="color: white; text-align: center">
+          To see your dashboard, you must first play the game.
+        </p>
+        <br />
+        <div
+          id="outer"
+          style="width: 100%; overflow-x: hidden; text-align: center"
+        >
+          <div id="inner" style="display: inline-block">
+            <iframe
+              src="https://giphy.com/embed/l3q2QRKIXtoySDo9a"
+              style="
+                display: block;
+                margin: 0 auto;
+                border: 0;
+                width: 300px;
+                height: 300px;
+                border-radius: 10px;
+              "
+            ></iframe>
           </div>
         </div>
-      </div>        
+      </div>     
       <% } %>
     <script>
       if ('<%- data.history %>' == 'true') {
@@ -338,10 +363,7 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
 function goBack() {
   goForthButton.style.display="block";
   currentDate.setDate(currentDate.getDate());
-  console.log(currentDate);
-  console.log(gameScores);
   goBackCount++; // Increment the goBackCount
-  console.log(goBackCount);
   document.getElementById("goForthButton").style.display = "block";
 
   gameLabels = [];
@@ -381,7 +403,6 @@ function goBack() {
 }
 
 function goForth() {
-  console.log(goBackCount);
   goBackCount--; // Decrement the goBackCount
 
   if (goBackCount === 0) {
@@ -588,7 +609,6 @@ label: function (context) {
   function updateImageOpacity() {
 
     var progress = parseInt(progressBar.style.width);
-    console.log(progress);
   
     
     if (progress < 25) {
@@ -708,7 +728,6 @@ userScores.push(JSON.parse(accuracy0));
 
   // Function to update the progress bar and icon based on the progress
 
-  console.log(answeredPercentage);
 
   function updateProgressBar(progress) {
   answeredPercentage = Math.floor(progress * 100);

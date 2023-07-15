@@ -38,12 +38,6 @@ app.get("/dashboard-data", async (req, res) => {
         totalMultipleChoice +
         totalMultipleResponse +
         totalShortText;
-      console.log(totalGraphicalHotspots);
-      console.log(totalImagebased);
-      console.log(totalMultipleChoice);
-      console.log(totalMultipleResponse);
-      console.log(totalShortText);
-      console.log(totalQuestions);
 
       for (const user of users) {
         const answered = await History.countDocuments({
@@ -71,8 +65,6 @@ app.get("/dashboard-data", async (req, res) => {
       const percentage20 = ((count20 / users.length) * 100).toFixed(2);
       const percentage50 = ((count50 / users.length) * 100).toFixed(2);
       const percentage100 = ((count100 / users.length) * 100).toFixed(2);
-
-      console.log("Username:", currentUser.username);
 
       // Retrieve and calculate other required data
       const accuracy100 = await History.countDocuments({
@@ -338,7 +330,6 @@ app.get("/dashboard-data", async (req, res) => {
       }
 
       const currentUserScore = currentUser2.score;
-      console.log(currentUser2.score);
 
       // Get the count of users with a score less than the current user's score
       const countUsersWithLessScore = await User.countDocuments({
@@ -350,11 +341,6 @@ app.get("/dashboard-data", async (req, res) => {
         (countUsersWithLessScore / totalUsersWithoutCurrent) *
         100
       ).toFixed(2);
-
-      // Display the percentage
-      console.log(
-        `Percentage of users with a score less than the current user: ${worsePercentage}%`
-      );
 
       data = {
         history: true,
@@ -401,9 +387,184 @@ app.get("/dashboard-data", async (req, res) => {
 
 app.get("/feedback", async (req, res) => {
   try {
-    const data = {
-      API_KEY: process.env.API_KEY,
-    };
+    const currentUser = await CurrentUser.findOne({});
+    const currentUser_answered = await History.countDocuments({
+      username: currentUser.username,
+    });
+    let data;
+    if (currentUser_answered > 0) {
+      const categoryGeographyInd = await History.countDocuments({
+        category: "geography",
+        username: `${currentUser.username}`,
+      });
+      const categoryVocabularyInd = await History.countDocuments({
+        category: "vocabulary",
+        username: `${currentUser.username}`,
+      });
+      const categoryFactsInd = await History.countDocuments({
+        category: "facts",
+        username: `${currentUser.username}`,
+      });
+      const categoryCultureInd = await History.countDocuments({
+        category: "culture",
+        username: `${currentUser.username}`,
+      });
+      const categoryHistoryInd = await History.countDocuments({
+        category: "history",
+        username: `${currentUser.username}`,
+      });
+
+      const skillGeographyInd = await History.countDocuments({
+        category: "geography",
+        accuracy: 100,
+        username: `${currentUser.username}`,
+      });
+      const skillVocabularyInd = await History.countDocuments({
+        category: "vocabulary",
+        accuracy: 100,
+        username: `${currentUser.username}`,
+      });
+      const skillFactsInd = await History.countDocuments({
+        category: "facts",
+        accuracy: 100,
+        username: `${currentUser.username}`,
+      });
+      const skillCultureInd = await History.countDocuments({
+        category: "culture",
+        accuracy: 100,
+        username: `${currentUser.username}`,
+      });
+      const skillHistoryInd = await History.countDocuments({
+        category: "history",
+        accuracy: 100,
+        username: `${currentUser.username}`,
+      });
+
+      let percentageVocabularyInd = (
+        (skillVocabularyInd / categoryVocabularyInd) *
+        100
+      ).toFixed(2);
+      let percentageGeographyInd = (
+        (skillGeographyInd / categoryGeographyInd) *
+        100
+      ).toFixed(2);
+      let percentageFactsInd = (
+        (skillFactsInd / categoryFactsInd) *
+        100
+      ).toFixed(2);
+      let percentageCultureInd = (
+        (skillCultureInd / categoryCultureInd) *
+        100
+      ).toFixed(2);
+      let percentageHistoryInd = (
+        (skillHistoryInd / categoryHistoryInd) *
+        100
+      ).toFixed(2);
+
+      // Check if a variable is NaN and assign the string if true
+      if (isNaN(percentageHistoryInd)) {
+        percentageHistoryInd =
+          "No question in this category has been answered yet!";
+      }
+      if (isNaN(percentageCultureInd)) {
+        percentageCultureInd =
+          "No question in this category has been answered yet!";
+      }
+      if (isNaN(percentageFactsInd)) {
+        percentageFactsInd =
+          "No question in this category has been answered yet!";
+      }
+      if (isNaN(percentageGeographyInd)) {
+        percentageGeographyInd =
+          "No question in this category has been answered yet!";
+      }
+      if (isNaN(percentageVocabularyInd)) {
+        percentageVocabularyInd =
+          "No question in this category has been answered yet!";
+      }
+
+      // TODO: feedbacke.ejs
+      // TODO: on categories check if it is empty if yes instead of sending prompt to chatgpt display that the following category didnt get played yet
+      // TODO: Learning Plan with learn type
+      const currentUserHistory = await History.find({
+        username: currentUser.username,
+      }).select({ _id: 0, accuracy: 0, reward: 0 });
+      let History_Correct = await History.find({
+        username: currentUser.username,
+        correct_answer: true,
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      let History_Wrong = await History.find({
+        username: currentUser.username,
+        correct_answer: false,
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      let History_History = await History.find({
+        username: currentUser.username,
+        category: "history",
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      let History_Vocabulary = await History.find({
+        username: currentUser.username,
+        category: "vocabulary",
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      let History_Facts = await History.find({
+        username: currentUser.username,
+        category: "facts",
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      let History_Culture = await History.find({
+        username: currentUser.username,
+        category: "culture",
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      let History_Geography = await History.find({
+        username: currentUser.username,
+        category: "geography",
+      })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .select({ _id: 0, accuracy: 0, reward: 0 });
+
+      data = {
+        history: true,
+        API_KEY: process.env.API_KEY,
+        history_json: currentUserHistory,
+        percentageVocabularyInd: percentageVocabularyInd,
+        percentageGeographyInd: percentageGeographyInd,
+        percentageFactsInd: percentageFactsInd,
+        percentageCultureInd: percentageCultureInd,
+        percentageHistoryInd: percentageHistoryInd,
+        History_Correct: History_Correct,
+        History_Wrong: History_Wrong,
+        History_History: History_History,
+        History_Vocabulary: History_Vocabulary,
+        History_Facts: History_Facts,
+        History_Culture: History_Culture,
+        History_Geography: History_Geography,
+      };
+    } else {
+      data = { history: false };
+    }
     res.render("feedback", {
       data,
     });
@@ -434,14 +595,12 @@ const client = new MongoClient(uri, {
 });
 
 const historySchema = new mongoose.Schema({
-  _id: String,
   username: String,
   timestamp: String,
   category: String,
   question: String,
   correct_answer: Boolean,
   accuracy: Number,
-  reward: Number,
 });
 
 // Define the user schema
