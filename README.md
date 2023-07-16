@@ -23,5 +23,3 @@ The frontend section of this project focuses on the following tasks:
 ## License
 
 This repository is released under the MIT License. Please review the license file for more details.
-
-Inspired from https://github.com/panshak/accountill (After you have set everything, remove this line)
