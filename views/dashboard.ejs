@@ -130,7 +130,7 @@ h1, h2, h3, h4, h5, h6 {
         <div class="card">
         <div class="card-body">
           <div class="chart-container">
-            <h5 class="chart-title">Progress in your first week</h5>
+            <h5 class="chart-title">Your Progress</h5>
             <canvas id="gameChart"></canvas>
              <button type="button" id ="goBackButton" class="btn btn-primary btn-floating">
               <i class="fas fa-angle-left"></i>
@@ -207,7 +207,7 @@ h1, h2, h3, h4, h5, h6 {
       <div class="card-body">
         <h5 class="card-title">Tasks by correctness</h5>
         <p style="color: lightslategrey; font-size:14px;">
-        "Close" means you gave a similar answer, but not the correct one, e.g. spelling mistakes.</p>
+        "Close" means you have asked for help to get the correct answer or you nearly gave the right answer, e.g. in geography questions.</p>
         <div class="chart-container">
           <canvas id="userChart"></canvas>
         </div>
@@ -292,73 +292,73 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
       initializeChart();
       
       function initializeChart() {
-        for (var i = daysToDisplay - 1; i >= 0; i--) {
-          var month = currentDate.toLocaleString("default", { month: "long" });
-          var day = currentDate.getDate();
-          var label = month + ", " + day;
-          gameLabels.push(label);
-      
-          var dateKey = currentDate.toDateString();
-      
-          if (historyCountByDate.hasOwnProperty(dateKey)) {
-            var historyCount = historyCountByDate[dateKey];
-            gameScores.push(historyCount);
-          } else {
-            gameScores.push(0);
-          }
+  for (var i = daysToDisplay - 1; i >= 0; i--) {
+    var month = currentDate.toLocaleString("default", { month: "long" });
+    var day = currentDate.getDate();
+    var label = month + ", " + day;
+    gameLabels.push(label);
 
-          if (historyCountByDateAvg.hasOwnProperty(dateKey)) {
-            var historyCountAvg = historyCountByDateAvg[dateKey];
-            gameScores2.push(historyCountAvg);
-          } else {
-            gameScores2.push(0);
-          }
+    var dateKey = currentDate.toDateString();
 
-          currentDate.setDate(currentDate.getDate() - 1);
-        }
-      
-        gameLabels.reverse();
-        gameScores.reverse();
-        gameScores2.reverse();
-      
-        var maxScore = Math.max(...gameScores);
-        var yAxisMax = Math.ceil(maxScore / 5) * 5;
-      
-        gameChart = new Chart(gameCtx, {
-          type: "line",
-          data: {
-            labels: gameLabels,
-            datasets: [
-              {
-                label: "Answered Questions",
-                data: gameScores,
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
-              },
-              {
-                label: "Average Answered Questions of all Users",
-                data: gameScores2,
-                backgroundColor: "rgba(255, 165, 0, 0.2)",
-                borderColor: "rgba(255, 165, 0, 0.5)",
-                borderWidth: 1,
-              }
-          
-            ],
+    if (historyCountByDate.hasOwnProperty(dateKey)) {
+      var historyCount = historyCountByDate[dateKey];
+      gameScores.push(historyCount);
+    } else {
+      gameScores.push(0);
+    }
+
+    if (historyCountByDateAvg.hasOwnProperty(dateKey)) {
+      var historyCountAvg = historyCountByDateAvg[dateKey];
+      gameScores2.push(historyCountAvg);
+    } else {
+      gameScores2.push(0);
+    }
+
+    currentDate.setDate(currentDate.getDate() - 1);
+  }
+
+  gameLabels.reverse();
+  gameScores.reverse();
+  gameScores2.reverse();
+
+  var maxScore = Math.max(...gameScores, ...gameScores2); // Find the maximum value among both arrays
+  var yAxisMax = Math.ceil(maxScore / 5) * 5;
+
+  gameChart = new Chart(gameCtx, {
+    type: "line",
+    data: {
+      labels: gameLabels,
+      datasets: [
+        {
+          label: "Answered Questions",
+          data: gameScores,
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+        {
+          label: "Average Answered Questions of all Users",
+          data: gameScores2,
+          backgroundColor: "rgba(255, 165, 0, 0.2)",
+          borderColor: "rgba(255, 165, 0, 0.5)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: yAxisMax,
+          ticks: {
+            stepSize: 1,
           },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: yAxisMax,
-                ticks: {
-                  stepSize: 1,
-                },
-              },
-            },
-          },
-        });
-      }
+        },
+      },
+    },
+  });
+}
+
      
 function goBack() {
   goForthButton.style.display="block";
@@ -627,7 +627,7 @@ label: function (context) {
     }
     if (progress >= 25) {
       image1.style.opacity = "1";
-      image2.style.opacity = "1";
+      image2.style.opacity = "0.3";
       image3.style.opacity = "0.3";
 
       novice.style.display='none';

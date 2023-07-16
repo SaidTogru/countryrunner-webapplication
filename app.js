@@ -141,32 +141,45 @@ app.get("/dashboard-data", async (req, res) => {
         2
       );
 
-      let streak = 0;
+      let streak = -1;
+      let currentStreak = 0;
       let previousDate = null;
-
+      
+      const currentDate = new Date(); // Get the current date
+      
       for (const entry of historyEntries) {
-        const currentDate = new Date(entry.timestamp);
-
-        if (!previousDate) {
+        const entryDate = new Date(entry.timestamp);
+      
+        if (!previousDate && entry.username === currentUser.username) {
           // First entry
-          previousDate = currentDate;
-          streak = 1;
+          previousDate = entryDate;
+          currentStreak = 1;
         } else {
-          const timeDifference = previousDate.getTime() - currentDate.getTime();
-          const daysDifference = Math.ceil(
-            timeDifference / (1000 * 60 * 60 * 24)
-          );
-
+          const timeDifference = previousDate.getTime() - entryDate.getTime();
+          const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      
           if (daysDifference === 1 && entry.username === currentUser.username) {
             // Consecutive days and same username
-            streak++;
-            previousDate = currentDate;
+            currentStreak++;
           } else if (daysDifference > 1) {
             // Gap in entries, streak ended
-            break;
+            if (currentStreak > 0) {
+              streak = currentStreak;
+            }
+            currentStreak = 0;
           }
+          previousDate = entryDate; // Update previousDate for every entry
         }
       }
+      
+      // Check if the current streak includes the current day
+      if (currentStreak > 0) {
+        streak = currentStreak;
+      }
+      
+      console.log(`Streak including the current day: ${streak} days`);
+      
+      
 
       //how much has been answered (how many documents are in history table?)
       const answered = await History.countDocuments({
