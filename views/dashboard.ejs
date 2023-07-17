@@ -207,7 +207,7 @@ h1, h2, h3, h4, h5, h6 {
       <div class="card-body">
         <h5 class="card-title">Tasks by correctness</h5>
         <p style="color: lightslategrey; font-size:14px;">
-        "Close" means you have asked for help to get the correct answer or you nearly gave the right answer, e.g. in geography questions.</p>
+        "Close" means you have asked for help to get the correct answer or you were close to the right answer, e.g. in geography questions.</p>
         <div class="chart-container">
           <canvas id="userChart"></canvas>
         </div>
@@ -322,7 +322,7 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
   gameScores2.reverse();
 
   var maxScore = Math.max(...gameScores, ...gameScores2); // Find the maximum value among both arrays
-  var yAxisMax = Math.ceil(maxScore / 5) * 5;
+  var yAxisMax = Math.ceil(maxScore / 5) * 5+5;
 
   gameChart = new Chart(gameCtx, {
     type: "line",

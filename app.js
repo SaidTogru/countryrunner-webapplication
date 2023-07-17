@@ -84,23 +84,24 @@ app.get("/dashboard-data", async (req, res) => {
       });
 
       // Create an object to store the count for each date
-      const historyCountByDate = {};
+const historyCountByDate = {};
 
-      for (const entry of historyEntries) {
-        const currentDate = new Date(entry.timestamp);
-        const dateKey = currentDate.toDateString(); // Use the date string as the key
+for (const entry of historyEntries) {
+  const currentDate = new Date(entry.timestamp);
+  const dateKey = currentDate.toDateString(); // Use the date string as the key
 
-        if (entry.username === currentUser.username) {
-          if (historyCountByDate[dateKey]) {
-            // Increment the count for the date
-            historyCountByDate[dateKey][currentUser.username] =
-              (historyCountByDate[dateKey][currentUser.username] || 0) + 1;
-          } else {
-            // Initialize the count for the date
-            historyCountByDate[dateKey] = 1;
-          }
-        }
-      }
+  if (entry.username === currentUser.username) {
+    if (historyCountByDate[dateKey]) {
+      // If the date already exists in the historyCountByDate object, increment the count
+      historyCountByDate[dateKey] = historyCountByDate[dateKey] + 1;
+    } else {
+      // If the date does not exist, initialize the count for the date
+      historyCountByDate[dateKey] = 1;
+    }
+  }
+}
+
+
 
       const historyCountByDateAvg = {};
 
@@ -142,40 +143,49 @@ app.get("/dashboard-data", async (req, res) => {
       );
 
       let streak = -1;
-      let currentStreak = 0;
-      let previousDate = null;
+
       
+
+
       const currentDate = new Date(); // Get the current date
-      
-      for (const entry of historyEntries) {
-        const entryDate = new Date(entry.timestamp);
-      
-        if (!previousDate && entry.username === currentUser.username) {
-          // First entry
-          previousDate = entryDate;
-          currentStreak = 1;
-        } else {
-          const timeDifference = previousDate.getTime() - entryDate.getTime();
-          const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-      
-          if (daysDifference === 1 && entry.username === currentUser.username) {
-            // Consecutive days and same username
-            currentStreak++;
-          } else if (daysDifference > 1) {
-            // Gap in entries, streak ended
-            if (currentStreak > 0) {
-              streak = currentStreak;
-            }
-            currentStreak = 0;
-          }
-          previousDate = entryDate; // Update previousDate for every entry
-        }
-      }
-      
-      // Check if the current streak includes the current day
+let previousDate = null; // Initialize previousDate as null
+
+for (const entry of historyEntries) {
+
+
+  const entryDate = new Date(entry.timestamp);
+   // Check if entryDate is a valid date object
+   if (isNaN(entryDate.getTime())) {
+    // Skip this entry and move to the next one
+    continue;
+   }
+
+  if (!previousDate && entry.username === currentUser.username) {
+    // First entry
+    previousDate = entryDate;
+    currentStreak = 1;
+  } else {
+    const timeDifference = previousDate.getTime() - entryDate.getTime();
+    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (daysDifference === 1 && entry.username === currentUser.username) {
+      // Consecutive days and same username
+      currentStreak++;
+    } else if (daysDifference > 1) {
+      // Gap in entries, streak ended
       if (currentStreak > 0) {
         streak = currentStreak;
       }
+      currentStreak = 0;
+    }
+    previousDate = entryDate; // Update previousDate for every entry
+  }
+}
+
+// Check if the current streak includes the current day
+if (currentStreak > 0) {
+  streak = currentStreak;
+}
       
       console.log(`Streak including the current day: ${streak} days`);
       
