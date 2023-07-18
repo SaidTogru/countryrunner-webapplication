@@ -79,16 +79,20 @@ app.get("/dashboard-data", async (req, res) => {
         accuracy: 0,
         username: `${currentUser.username}`,
       });
-      const historyEntries = await History.find({}).sort({
-        timestamp: -1,
-      });
+      const historyEntries = await History.find({})
+      .sort({ timestamp: -1 });
+    
 
       // Create an object to store the count for each date
 const historyCountByDate = {};
 
 for (const entry of historyEntries) {
+  
   const currentDate = new Date(entry.timestamp);
+  console.log(currentDate);
+  
   const dateKey = currentDate.toDateString(); // Use the date string as the key
+  console.log(dateKey);
 
   if (entry.username === currentUser.username) {
     if (historyCountByDate[dateKey]) {
@@ -100,8 +104,6 @@ for (const entry of historyEntries) {
     }
   }
 }
-
-
 
       const historyCountByDateAvg = {};
 
@@ -122,15 +124,18 @@ for (const entry of historyEntries) {
         }
       }
 
+
+
       for (const dateKey in historyCountByDateAvg) {
         const { count, userCount } = historyCountByDateAvg[dateKey];
         const average = count / userCount.size;
-        historyCountByDateAvg[dateKey] = average;
+        const roundedAverage = parseFloat(average.toFixed(2));
+        historyCountByDateAvg[dateKey] = roundedAverage;
       }
 
       const usersWithStreak = await User.find({
         streak: {
-          $lt: currentUser.streak,
+          $lt: currentUser.currentStreak,
         },
       }).countDocuments();
       const totalUsers = await User.countDocuments();
@@ -141,56 +146,46 @@ for (const entry of historyEntries) {
       const streakPercentage = ((usersWithStreak / totalUsers) * 100).toFixed(
         2
       );
-
-      let streak = -1;
-
-      
-
-
+    
       const currentDate = new Date(); // Get the current date
-let previousDate = null; // Initialize previousDate as null
-
-for (const entry of historyEntries) {
-
-
-  const entryDate = new Date(entry.timestamp);
-   // Check if entryDate is a valid date object
-   if (isNaN(entryDate.getTime())) {
-    // Skip this entry and move to the next one
-    continue;
-   }
-
-  if (!previousDate && entry.username === currentUser.username) {
-    // First entry
-    previousDate = entryDate;
-    currentStreak = 1;
-  } else {
-    const timeDifference = previousDate.getTime() - entryDate.getTime();
-    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-    if (daysDifference === 1 && entry.username === currentUser.username) {
-      // Consecutive days and same username
-      currentStreak++;
-    } else if (daysDifference > 1) {
-      // Gap in entries, streak ended
-      if (currentStreak > 0) {
-        streak = currentStreak;
+      let currentStreak = 0;
+      let previousDate = null;
+      
+      for (const entry of historyEntries) {
+        const entryDate = new Date(entry.timestamp);
+      
+        // Check if entryDate is a valid date object and the username matches
+        if (
+          isNaN(entryDate.getTime()) ||
+          entry.username !== currentUser.username
+        ) {
+          // Skip this entry and move to the next one
+          continue;
+        }
+      
+        if (!previousDate) {
+          // First entry for the current user
+          previousDate = entryDate;
+          currentStreak = 1;
+        } else {
+          const timeDifference = previousDate.getTime() - entryDate.getTime();
+          const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      
+          if (daysDifference === 1) {
+            // Consecutive days for the current user
+            currentStreak++;
+            previousDate = entryDate;
+          } else {
+            // Gap in entries, streak ended
+            currentStreak=0;
+            break;
+          }
+        }
       }
-      currentStreak = 0;
-    }
-    previousDate = entryDate; // Update previousDate for every entry
-  }
-}
-
-// Check if the current streak includes the current day
-if (currentStreak > 0) {
-  streak = currentStreak;
-}
       
-      console.log(`Streak including the current day: ${streak} days`);
+      console.log(`Streak including the current day: ${currentStreak} days`);
       
       
-
       //how much has been answered (how many documents are in history table?)
       const answered = await History.countDocuments({
         username: `${currentUser.username}`,
@@ -379,7 +374,7 @@ if (currentStreak > 0) {
         skillsScores: skillsScores,
         userScores: userScores,
         answeredPercentage: answeredPercentage,
-        streak: streak,
+        currentStreak: currentStreak,
         historyCountByDate: historyCountByDate,
         percentageVocabularyInd: percentageVocabularyInd,
         percentageGeographyInd: percentageGeographyInd,

@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     <% if (data.history=== true) { %>
 <div class="col-md-8">
         <div class="row">
-          <h1 style="color:white;">Learning Dashboard of  <%= data.currentUser.username %></h1></h1>
+          <h1 style="color:white;">Learning Dashboard of <%= data.currentUser.username %></h1>
           </div>
           </div>
           <div class="card" style="background-image:url('../img/passport2.png'); background-color: rgba(0, 0, 0, 0.3); ">
@@ -91,7 +91,7 @@ h1, h2, h3, h4, h5, h6 {
                   <div class="text-align-center">
                   <img id="image1" src="../img/stamp_travel_novice.png" style="width:120px;">
                   <h5>Travel Novice</h5>
-                  <p>You encountered > 20% of questions and are starting to get to know a country!</p>
+                  <p>You encountered > 25% of questions and are starting to get to know a country!</p>
                   <p style="color: lightslategrey; font-size:14px;"> <%=parseInt(data.percentage20) %>% of learners have this stamp in their passport as well.</p>
                   <div class="btn btn-outline-success" id="novice_unlocked" style="pointer-events: none;">NEW</div> 
                   <div  class="btn btn-outline-secondary" id="novice" style="pointer-events: none;">TO BE UNLOCKED</div>
@@ -130,7 +130,7 @@ h1, h2, h3, h4, h5, h6 {
         <div class="card">
         <div class="card-body">
           <div class="chart-container">
-            <h5 class="chart-title">Your Progress</h5>
+            <h5 class="chart-title">Your Progress: Answered Questions</h5>
             <canvas id="gameChart"></canvas>
              <button type="button" id ="goBackButton" class="btn btn-primary btn-floating">
               <i class="fas fa-angle-left"></i>
@@ -141,8 +141,9 @@ h1, h2, h3, h4, h5, h6 {
         
 
           </div>
-          <h6 style="padding-top:5%">Congratulations, you managed a <%=data.streak%>-day streak!</h6>
-             <p style="color: lightslategrey; font-size:14px;"><%=parseInt(data.streakPercentage)%>% of learners have achieved a <%=data.streak%>-day streak as well.</p>
+          <p style="color: lightslategrey; font-size:14px;">See how you are doing compared to the average user. </p>
+         <!-- <h6 style="padding-top:5%">Congratulations, you managed a <%=data.currentStreak%>-day streak!</h6>
+             <p style="color: lightslategrey; font-size:14px;"><%=parseInt(data.streakPercentage)%>% of learners have achieved a <%=data.currentStreak%>-day streak as well.</p>-->
         </div>
       </div>
     </div>
@@ -330,14 +331,14 @@ By exploring the rich history, vocabulary, and cultural nuances of Germany, you'
       labels: gameLabels,
       datasets: [
         {
-          label: "Answered Questions",
+          label: "You",
           data: gameScores,
           backgroundColor: "rgba(75, 192, 192, 0.2)",
           borderColor: "rgba(75, 192, 192, 1)",
           borderWidth: 1,
         },
         {
-          label: "Average Answered Questions of all Users",
+          label: "Average User",
           data: gameScores2,
           backgroundColor: "rgba(255, 165, 0, 0.2)",
           borderColor: "rgba(255, 165, 0, 0.5)",
