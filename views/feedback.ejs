@@ -209,7 +209,7 @@
           style="font-family: CustomFont, sans-serif; font-size: 16px"
         >
           <option value="basic">Basic Feedback</option>
-          <option value="complex">Complex Feedback</option>
+          <option value="advanced">Advanced Feedback</option>
           <option value="category">Category-based Feedback</option>
           <option value="personalized">Personalized Plan</option>
         </select>
@@ -227,7 +227,7 @@
           </div>
         </div>
       </div>
-      <div id="complex" style="display: none">
+      <div id="advanced" style="display: none">
         <div class="container">
           <div class="card black">
             <h2>
@@ -361,7 +361,7 @@
         .getElementById("feedback-option")
         .addEventListener("change", function () {
           // Hide all divs
-          ["basic", "complex", "category", "personalized"].forEach(function (
+          ["basic", "advanced", "category", "personalized"].forEach(function (
             id
           ) {
             document.getElementById(id).style.display = "none";
@@ -378,7 +378,7 @@
           const selectedOption = this.value;
 
           // Hide all divs
-          ["basic", "complex", "category", "personalized"].forEach(function (
+          ["basic", "advanced", "category", "personalized"].forEach(function (
             id
           ) {
             document.getElementById(id).style.display = "none";
@@ -403,7 +403,7 @@
         let basic_prefix = `I have been participating in a quiz game featuring various question types like multiple choice and short answer, covering categories like vocabulary, history, geography, facts, and culture. The game tracks my performance history, recording correct and incorrect answers, along with their respective categories and question types.
             I would like personalized feedback on every question I answered, why correct or why wrong.
             `
-        let complex_prefix = `I have been participating in a quiz game featuring various question types like multiple choice and short answer, covering categories like vocabulary, history, geography, facts, and culture. The game tracks my performance history, recording correct and incorrect answers, along with their respective categories and question types.
+        let advanced_prefix = `I have been participating in a quiz game featuring various question types like multiple choice and short answer, covering categories like vocabulary, history, geography, facts, and culture. The game tracks my performance history, recording correct and incorrect answers, along with their respective categories and question types.
             I would like personalized feedback based on my game performance, using established literature to ensure its effectiveness. Specifically, apply Hattie & Timperley's (2007) feedback model to my case. This model suggests that feedback should reduce the discrepancy between current performance and desired goals by addressing three questions: Where am I going (the goals)? How am I going (current status)? Where to next (improvements)?
             Feedback should operate at four levels: task, process, self-regulation, and self. The goal is to motivate learning and enhance performance. Also, consider Narciss's (2006, 2020) perspectives on feedback strategies and categories, and theories around timing, direct vs. indirect, and the quality of feedback.
             Using these guidelines, provide me with relevant, informative feedback that encourages self-assessment and a dialogic learning process.
@@ -473,7 +473,7 @@
           if (cardType == "3") {
             var base = `Based on my performance, what specific goals can I set for the next game? 
             This could be about improving my overall score or focusing on a specific category where you had more wrong answers.`
-            var prompt = complex_prefix + base+ infix 
+            var prompt = advanced_prefix + base+ infix 
             + "History of answered questions: " + whole_history +
             + "\n"
             + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
@@ -491,7 +491,7 @@
           if (cardType == "4") {
             var base = `Considering my overall performance across all categories, can you provide elaborated feedback 
             that addresses my task understanding, self-regulation, and overall learning process to improve in all areas?`
-            var prompt = complex_prefix + base+ infix 
+            var prompt = advanced_prefix + base+ infix 
             + "History of answered questions: " + whole_history +
             + "\n"
             + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
@@ -509,7 +509,7 @@
           if (cardType == "5") {
             var base = `Looking at the timestamps of my activities, 
             what insights can you share about my learning habits, and how might these affect my performance?`
-            var prompt = complex_prefix + base+ infix 
+            var prompt = advanced_prefix + base+ infix 
             + "History of answered questions: " + whole_history +
             + "\n"
             + "Percentage in the Vocabolury category: " + percentageVocabularyInd 
