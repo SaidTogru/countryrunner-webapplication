@@ -29,11 +29,17 @@
   
   <body style="background-color:orange; overflow-y: auto; padding: 20px;">
     <style>
+
+      
      .card {
      
       display: flex;
         flex-direction: column;
         height: 100%;
+     }
+
+     .last-element {
+      margin-bottom: 25px;
      }
 
     .row {
@@ -131,6 +137,8 @@ h1, h2, h3, h4, h5, h6 {
         <div class="card-body">
           <div class="chart-container">
             <h5 class="chart-title">Your Progress: Answered Questions</h5>
+            <p style="color: lightslategrey; font-size:14px;">See your accomplished tasks per day compared to the average user. </p>
+   
             <canvas id="gameChart"></canvas>
              <button type="button" id ="goBackButton" class="btn btn-primary btn-floating">
               <i class="fas fa-angle-left"></i>
@@ -142,8 +150,7 @@ h1, h2, h3, h4, h5, h6 {
 
           </div>
           <br/>
-          <p style="color: lightslategrey; font-size:14px;">See your accomplished tasks per day compared to the average user. </p>
-         <!-- <h6 style="padding-top:5%">Congratulations, you managed a <%=data.currentStreak%>-day streak!</h6>
+             <!-- <h6 style="padding-top:5%">Congratulations, you managed a <%=data.currentStreak%>-day streak!</h6>
              <p style="color: lightslategrey; font-size:14px;"><%=parseInt(data.streakPercentage)%>% of learners have achieved a <%=data.currentStreak%>-day streak as well.</p>-->
         </div>
       </div>
@@ -152,6 +159,8 @@ h1, h2, h3, h4, h5, h6 {
         <div class="card">
         <div class="card-body">
           <h5 class="card-title">Overall player ranking</h5>
+          <p style="color: lightslategrey; font-size:14px;">You are better than <%=parseInt(data.worsePercentage)%>% of users.</p> 
+ 
           <table class="table">
             <thead>
               <tr>
@@ -172,8 +181,7 @@ h1, h2, h3, h4, h5, h6 {
               <% }); %>
             </tbody>
           </table>
-          <p style="color: lightslategrey; font-size:14px;">You are better than <%=parseInt(data.worsePercentage)%>% of users.</p> 
-        </div>
+              </div>
     </div>
   </div>
 </div>
@@ -220,7 +228,7 @@ h1, h2, h3, h4, h5, h6 {
 
 <div class="margin-top-10">
 <div class="col-md-12">
-<div class="card">
+<div class="card last-element">
   <div class="card-body">
     <div class="row">
       <h5>Remember, learning doesn't end here</h5>

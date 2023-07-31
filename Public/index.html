@@ -6,6 +6,12 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
+
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Passion+One&display=swap" rel="stylesheet">
+
     <style>
       html,
       body {
@@ -20,9 +26,86 @@
         justify-content: center;
         align-items: center;
       }
+
+      body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.cookie-banner-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(228, 228, 228, 0.194); /* Transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Passion One', cursive;
+}
+
+.cookie-banner {
+  width: 80%;
+  max-width: 800px;
+  background-color: orange;
+  padding: 15px;
+  text-align: center;
+  padding:30px;
+  border-radius:15px;
+}
+
+.btn {
+  background-color: white;
+  color: orange;
+  border: 1px solid orange;
+  padding: 8px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: orange;
+  color: white;
+}
+.btn {
+  background-color: white;
+  color: orange;
+  border: 1px solid orange;
+  padding: 8px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: orange;
+  color: white;
+}
+
+
     </style>
   </head>
   <body>
+
+    <div class="cookie-banner-container">
+      <div id="cookie-banner" class="cookie-banner">
+        <h1>Your Privacy matters!</h1>
+        <p>We use cookies to provide you with helpful insights into your learning journey. This helps you to reach your learning goals. Your IP address will remain anonymous. By clicking 'Accept All', your data allows you to improve your learning performance. Read our Privacy Policy for details.</p>
+        <button id="accept-all-btn" class="btn">Accept All</button>
+        <button id="customize-btn" class="btn" style="  border-color:white;
+        background-color: transparent;
+        border: 1px solid white; color: white;">Customize</button>
+      </div>
+    </div>
+
     <div class="container">
       <h2>Country Runner Login</h2>
       <br />
@@ -54,6 +137,41 @@
           alert("Please enter a username.");
         }
       }
+
+      // Get the cookie banner and buttons
+const cookieBanner = document.getElementById("cookie-banner");
+const acceptAllBtn = document.getElementById("accept-all-btn");
+const customizeBtn = document.getElementById("customize-btn");
+
+// Function to hide the cookie banner and set a cookie to remember the user's choice
+function hideCookieBanner() {
+  cookieBanner.style.display = "none";
+  // Set a cookie with an expiration of 30 days to remember the user's choice
+  document.cookie = "cookiesAccepted=true; expires=" + new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
+}
+
+// Function to handle the "Accept All" button click
+function acceptAll() {
+  // You can customize this function to handle the acceptance of all cookies
+  // For a basic implementation, we will just hide the banner
+  hideCookieBanner();
+}
+
+// Function to handle the "Customize" button click
+function customize() {
+  // You can customize this function to show a settings modal or link to a settings page
+  // For a basic implementation, we will just hide the banner
+  hideCookieBanner();
+}
+
+// Check if the user has already accepted cookies
+if (document.cookie.includes("cookiesAccepted=true")) {
+  hideCookieBanner();
+} else {
+  // Add event listeners to the buttons
+  acceptAllBtn.addEventListener("click", acceptAll);
+  customizeBtn.addEventListener("click", customize);
+}
     </script>
   </body>
 </html>
