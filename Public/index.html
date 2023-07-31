@@ -95,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
   </head>
   <body>
 
-    <div class="cookie-banner-container">
+    <div class="cookie-banner-container" id="cookie-banner-container">
       <div id="cookie-banner" class="cookie-banner">
         <h1>Your Privacy matters!</h1>
         <p>We use cookies to provide you with helpful insights into your learning journey. This helps you to reach your learning goals. Your IP address will remain anonymous. By clicking 'Accept All', your data allows you to improve your learning performance. Read our Privacy Policy for details.</p>
@@ -142,10 +142,14 @@ h1, h2, h3, h4, h5, h6 {
 const cookieBanner = document.getElementById("cookie-banner");
 const acceptAllBtn = document.getElementById("accept-all-btn");
 const customizeBtn = document.getElementById("customize-btn");
+const cookieContainer = document.getElementById("cookie-banner-container");
+
 
 // Function to hide the cookie banner and set a cookie to remember the user's choice
 function hideCookieBanner() {
   cookieBanner.style.display = "none";
+  cookieContainer.style.display ="none";
+
   // Set a cookie with an expiration of 30 days to remember the user's choice
   document.cookie = "cookiesAccepted=true; expires=" + new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
 }
